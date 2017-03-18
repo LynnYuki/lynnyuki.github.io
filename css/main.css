@@ -1685,7 +1685,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #d109fa;
+  background: #fff658;
 }
 .links-of-blogroll {
   font-size: 13px;
@@ -2853,4 +2853,16 @@ pre .javascript .function {
   .post-body {
     text-align: justify;
   }
+}
+.menu .menu-item a {
+  padding: 5px 20px;
+  background: #222;
+  border: none;
+  color: #fff;
+  transition-property: background;
+  box-shadow: 5px 5px 5px #888;
+  border-radius: 10px;
+}
+.menu .menu-item {
+  margin-left: 0px;
 }
