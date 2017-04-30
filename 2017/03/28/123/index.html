@@ -87,16 +87,25 @@
 
 
 
-<meta name="description" content="How is everthing going?？？？">
+<meta name="description" content="RecyclerView和listview的比较
+RecyclerView定义：A flexible view for providing a limited window into a large data set.public class RecyclerView 
+extends ViewGroup implements ScrollingView, NestedScrollingChild">
 <meta property="og:type" content="article">
-<meta property="og:title" content="123">
+<meta property="og:title" content="RecyclerView和Listview的比较">
 <meta property="og:url" content="https://lynnyuki.github.io/2017/03/28/123/index.html">
 <meta property="og:site_name" content="Yoo">
-<meta property="og:description" content="How is everthing going?？？？">
-<meta property="og:updated_time" content="2017-04-07T12:19:59.304Z">
+<meta property="og:description" content="RecyclerView和listview的比较
+RecyclerView定义：A flexible view for providing a limited window into a large data set.public class RecyclerView 
+extends ViewGroup implements ScrollingView, NestedScrollingChild">
+<meta property="og:image" content="http://s365.photo.store.qq.com/psb?/V11Sou8U3Zfby6/2tG95qhpaERuYZFU9ZmrFhHBC*Xg.QXBgKYt2koOcjk!/b/dG0BAAAAAAAA">
+<meta property="og:image" content="http://r.photo.store.qq.com/psb?/V11Sou8U3Zfby6/bkKiiHnn*pdThURuf5M.BvjLvPim9KOMdUP6mnDucUs!/r/dG4BAAAAAAAA">
+<meta property="og:updated_time" content="2017-04-30T11:44:00.998Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="123">
-<meta name="twitter:description" content="How is everthing going?？？？">
+<meta name="twitter:title" content="RecyclerView和Listview的比较">
+<meta name="twitter:description" content="RecyclerView和listview的比较
+RecyclerView定义：A flexible view for providing a limited window into a large data set.public class RecyclerView 
+extends ViewGroup implements ScrollingView, NestedScrollingChild">
+<meta name="twitter:image" content="http://s365.photo.store.qq.com/psb?/V11Sou8U3Zfby6/2tG95qhpaERuYZFU9ZmrFhHBC*Xg.QXBgKYt2koOcjk!/b/dG0BAAAAAAAA">
 
 
 
@@ -130,7 +139,7 @@
 
 
 
-  <title> 123 | Yoo </title>
+  <title> RecyclerView和Listview的比较 | Yoo </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -290,7 +299,7 @@
             
             
               
-                123
+                RecyclerView和Listview的比较
               
             
           </h1>
@@ -316,6 +325,28 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -323,7 +354,7 @@
 
           
           
-             <span id="/2017/03/28/123/" class="leancloud_visitors" data-flag-title="123">
+             <span id="/2017/03/28/123/" class="leancloud_visitors" data-flag-title="RecyclerView和Listview的比较">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -352,7 +383,39 @@
       
 
       
-        <p>How is everthing going?？？？</p>
+        <h2 id="RecyclerView和listview的比较"><a href="#RecyclerView和listview的比较" class="headerlink" title="RecyclerView和listview的比较"></a>RecyclerView和listview的比较</h2><hr>
+<h3 id="RecyclerView定义："><a href="#RecyclerView定义：" class="headerlink" title="RecyclerView定义："></a>RecyclerView定义：</h3><p>A flexible view for providing a limited window into a large data set.<br><br><code>public class RecyclerView 
+extends ViewGroup implements ScrollingView, NestedScrollingChild</code></p>
+<h3 id="listview定义："><a href="#listview定义：" class="headerlink" title="listview定义："></a>listview定义：</h3><p>A view that shows items in a vertically scrolling list. The items come from the ListAdapter associated with this view.<br><br><code>public class ListView 
+extends AbsListView</code></p>
+<p>android 5.0 以后推荐使用RecyclerView代替listview。二者区别有以下几点：</p>
+<ul>
+<li>Adapter中的ViewHolder模式 - 对于ListView来说，通过创建ViewHolder来提升性能并不是必须的。因为ListView并没有严格的ViewHolder设计模式。但是在使用RecyclerView的时候，Adapter必须实现至少一个ViewHolder，必须遵循ViewHolder设计模式。</li>
+<li>定制Item条目 - ListView只能实现垂直线性排列的列表视图，与之不同的是，RecyclerView可以通过设置RecyclerView.LayoutManager来定制不同风格的视图，比如水平滚动列表或者不规则的瀑布流列表。</li>
+<li>Item动画 - 在ListView中没有提供任何方法或者接口，方便开发者实现Item的增删动画。相反地，可以通过设置RecyclerView的RecyclerView.ItemAnimator来为条目增加动画效果</li>
+<li>设置数据源 - 在LisView中针对不同数据封装了各种类型的Adapter，比如用来处理数组的ArrayAdapter和用来展示Database结果的CursorAdapter。相反地，在RecyclerView中必须自定义实现RecyclerView.Adapter并为其提供数据集合。</li>
+<li>设置条目分割线 - 在ListView中可以通过设置android:divider属性来为两个Item间设置分割线。如果想为RecyclerView添加此效果，则必须使用RecyclerView.ItemDecoration，这种实现方式不仅更灵活，而且样式也更加丰富。</li>
+<li>设置点击事件 - 在ListView中存在AdapterView.OnItemClickListener接口，用来绑定条目的点击事件。但是，很遗憾的是在RecyclerView中，并没有提供这样的接口，不过，提供了另外一个接口RcyclerView.OnItemTouchListener，用来响应条目的触摸事件。</li>
+</ul>
+<h3 id="归结来说，improvement体现在："><a href="#归结来说，improvement体现在：" class="headerlink" title="归结来说，improvement体现在："></a>归结来说，improvement体现在：</h3><ul>
+<li>Reuses cells while scrolling up/down - this is possible with implementing View Holder in the listView adapter, but it was an optional thing, while in the RecycleView it’s the default way of writing adapter.</li>
+<li>Decouples(解耦) list from its container - so you can put list items easily at run time in the different containers (linearLayout, gridLayout) with setting LayoutManager.<pre><code>mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
+mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+//or
+mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));</code></pre></li>
+<li>Animates common list actions - Animations are decoupled and delegated to ItemAnimator.</li>
+</ul>
+<h3 id="viewholder优化listview的原理："><a href="#viewholder优化listview的原理：" class="headerlink" title="viewholder优化listview的原理："></a>viewholder优化listview的原理：</h3><p>在adapter的getView函数中复用convertView,避免为每一个item都创建一个view。当ListView的Item从上方滚出屏幕视角之外，对应Item的View会被缓存到Recycler中，相应的会从下方生成一个Item，而此时调用的getView中的convertView参数就是滚出屏幕的Item的View</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> View <span class="title">getView</span><span class="params">(<span class="keyword">int</span> position, View convertView, ViewGroup parent)</span> </span>&#123;</div><div class="line">	System.out.println(<span class="string">"getView "</span> + position + <span class="string">" "</span> + convertView);</div><div class="line">	ViewHolder holder = <span class="keyword">null</span>;</div><div class="line">	<span class="keyword">if</span> (convertView == <span class="keyword">null</span>) &#123;</div><div class="line">		convertView = mInflater.inflate(R.layout.lv_item, <span class="keyword">null</span>);</div><div class="line">		holder = <span class="keyword">new</span> ViewHolder();</div><div class="line">		holder.textView = (TextView)convertView.findViewById(R.id.tv_text);</div><div class="line">		convertView.setTag(holder);</div><div class="line">	&#125; <span class="keyword">else</span> &#123;</div><div class="line">		holder = (ViewHolder)convertView.getTag();</div><div class="line">	&#125;</div><div class="line">	holder.textView.setText(mData.get(position));</div><div class="line">	<span class="keyword">return</span> convertView;</div><div class="line">&#125;</div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">ViewHolder</span> </span>&#123;</div><div class="line">    <span class="keyword">public</span> TextView textView;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>参考：<a href="http://www.tuicool.com/articles/vimeAj" target="_blank" rel="external">ListView的性能优化之convertView和viewHolder</a></p>
+<h3 id="RecyclerView和listview缓存机制的不同"><a href="#RecyclerView和listview缓存机制的不同" class="headerlink" title="RecyclerView和listview缓存机制的不同:"></a>RecyclerView和listview缓存机制的不同:</h3><p>ListView两级缓存，缓存的是view；RecyclerView四级缓存，缓存的是RecyclerView.ViewHolder。</p>
+<p>ListView获取缓存的流程：</p>
+<p><img src="http://s365.photo.store.qq.com/psb?/V11Sou8U3Zfby6/2tG95qhpaERuYZFU9ZmrFhHBC*Xg.QXBgKYt2koOcjk!/b/dG0BAAAAAAAA" alt=""></p>
+<p>RecyclerView获取缓存的流程：</p>
+<p><img src="http://r.photo.store.qq.com/psb?/V11Sou8U3Zfby6/bkKiiHnn*pdThURuf5M.BvjLvPim9KOMdUP6mnDucUs!/r/dG4BAAAAAAAA" alt=""></p>
+<p>参考：</p>
+<p><a href="http://kymjs.com/code/2016/07/10/01/" target="_blank" rel="external">张涛：深入浅出 RecyclerView</a></p>
+<p><a href="http://mp.weixin.qq.com/s?__biz=MzAwNDY1ODY2OQ==&amp;mid=2649286405&amp;idx=1&amp;sn=414e2d2eb577884ccee5c9076e8b8357&amp;chksm=8334c387b4434a9124f5acd93f331968a44256b8374eeafb4b1857671072b3b6364e5ec38485&amp;mpshare=1&amp;scene=1&amp;srcid=1021DYZiQRqvXgVEyhHyoEMS#rd" target="_blank" rel="external">Android ListView与RecyclerView对比浅析–缓存机制</a></p>
 
       
     </div>
@@ -395,8 +458,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/03/24/third-article/" rel="next" title="third_article">
-                <i class="fa fa-chevron-left"></i> third_article
+              <a href="/2017/03/24/third-article/" rel="next" title="Serializable">
+                <i class="fa fa-chevron-left"></i> Serializable
               </a>
             
           </div>
@@ -454,8 +517,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar_0.jpg"
@@ -517,6 +589,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#RecyclerView和listview的比较"><span class="nav-number">1.</span> <span class="nav-text">RecyclerView和listview的比较</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#RecyclerView定义："><span class="nav-number">1.1.</span> <span class="nav-text">RecyclerView定义：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#listview定义："><span class="nav-number">1.2.</span> <span class="nav-text">listview定义：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#归结来说，improvement体现在："><span class="nav-number">1.3.</span> <span class="nav-text">归结来说，improvement体现在：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#viewholder优化listview的原理："><span class="nav-number">1.4.</span> <span class="nav-text">viewholder优化listview的原理：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RecyclerView和listview缓存机制的不同"><span class="nav-number">1.5.</span> <span class="nav-text">RecyclerView和listview缓存机制的不同:</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

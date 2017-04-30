@@ -1085,7 +1085,7 @@
               
                 
                 <a class="post-title-link" href="/2017/03/28/123/" itemprop="url">
-                  123
+                  RecyclerView和Listview的比较
                 </a>
               
             
@@ -1112,6 +1112,28 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -1119,7 +1141,7 @@
 
           
           
-             <span id="/2017/03/28/123/" class="leancloud_visitors" data-flag-title="123">
+             <span id="/2017/03/28/123/" class="leancloud_visitors" data-flag-title="RecyclerView和Listview的比较">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1150,7 +1172,39 @@
       
         
           
-            <p>How is everthing going?？？？</p>
+            <h2 id="RecyclerView和listview的比较"><a href="#RecyclerView和listview的比较" class="headerlink" title="RecyclerView和listview的比较"></a>RecyclerView和listview的比较</h2><hr>
+<h3 id="RecyclerView定义："><a href="#RecyclerView定义：" class="headerlink" title="RecyclerView定义："></a>RecyclerView定义：</h3><p>A flexible view for providing a limited window into a large data set.<br><br><code>public class RecyclerView 
+extends ViewGroup implements ScrollingView, NestedScrollingChild</code></p>
+<h3 id="listview定义："><a href="#listview定义：" class="headerlink" title="listview定义："></a>listview定义：</h3><p>A view that shows items in a vertically scrolling list. The items come from the ListAdapter associated with this view.<br><br><code>public class ListView 
+extends AbsListView</code></p>
+<p>android 5.0 以后推荐使用RecyclerView代替listview。二者区别有以下几点：</p>
+<ul>
+<li>Adapter中的ViewHolder模式 - 对于ListView来说，通过创建ViewHolder来提升性能并不是必须的。因为ListView并没有严格的ViewHolder设计模式。但是在使用RecyclerView的时候，Adapter必须实现至少一个ViewHolder，必须遵循ViewHolder设计模式。</li>
+<li>定制Item条目 - ListView只能实现垂直线性排列的列表视图，与之不同的是，RecyclerView可以通过设置RecyclerView.LayoutManager来定制不同风格的视图，比如水平滚动列表或者不规则的瀑布流列表。</li>
+<li>Item动画 - 在ListView中没有提供任何方法或者接口，方便开发者实现Item的增删动画。相反地，可以通过设置RecyclerView的RecyclerView.ItemAnimator来为条目增加动画效果</li>
+<li>设置数据源 - 在LisView中针对不同数据封装了各种类型的Adapter，比如用来处理数组的ArrayAdapter和用来展示Database结果的CursorAdapter。相反地，在RecyclerView中必须自定义实现RecyclerView.Adapter并为其提供数据集合。</li>
+<li>设置条目分割线 - 在ListView中可以通过设置android:divider属性来为两个Item间设置分割线。如果想为RecyclerView添加此效果，则必须使用RecyclerView.ItemDecoration，这种实现方式不仅更灵活，而且样式也更加丰富。</li>
+<li>设置点击事件 - 在ListView中存在AdapterView.OnItemClickListener接口，用来绑定条目的点击事件。但是，很遗憾的是在RecyclerView中，并没有提供这样的接口，不过，提供了另外一个接口RcyclerView.OnItemTouchListener，用来响应条目的触摸事件。</li>
+</ul>
+<h3 id="归结来说，improvement体现在："><a href="#归结来说，improvement体现在：" class="headerlink" title="归结来说，improvement体现在："></a>归结来说，improvement体现在：</h3><ul>
+<li>Reuses cells while scrolling up/down - this is possible with implementing View Holder in the listView adapter, but it was an optional thing, while in the RecycleView it’s the default way of writing adapter.</li>
+<li>Decouples(解耦) list from its container - so you can put list items easily at run time in the different containers (linearLayout, gridLayout) with setting LayoutManager.<pre><code>mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
+mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+//or
+mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));</code></pre></li>
+<li>Animates common list actions - Animations are decoupled and delegated to ItemAnimator.</li>
+</ul>
+<h3 id="viewholder优化listview的原理："><a href="#viewholder优化listview的原理：" class="headerlink" title="viewholder优化listview的原理："></a>viewholder优化listview的原理：</h3><p>在adapter的getView函数中复用convertView,避免为每一个item都创建一个view。当ListView的Item从上方滚出屏幕视角之外，对应Item的View会被缓存到Recycler中，相应的会从下方生成一个Item，而此时调用的getView中的convertView参数就是滚出屏幕的Item的View</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> View <span class="title">getView</span><span class="params">(<span class="keyword">int</span> position, View convertView, ViewGroup parent)</span> </span>&#123;</div><div class="line">	System.out.println(<span class="string">"getView "</span> + position + <span class="string">" "</span> + convertView);</div><div class="line">	ViewHolder holder = <span class="keyword">null</span>;</div><div class="line">	<span class="keyword">if</span> (convertView == <span class="keyword">null</span>) &#123;</div><div class="line">		convertView = mInflater.inflate(R.layout.lv_item, <span class="keyword">null</span>);</div><div class="line">		holder = <span class="keyword">new</span> ViewHolder();</div><div class="line">		holder.textView = (TextView)convertView.findViewById(R.id.tv_text);</div><div class="line">		convertView.setTag(holder);</div><div class="line">	&#125; <span class="keyword">else</span> &#123;</div><div class="line">		holder = (ViewHolder)convertView.getTag();</div><div class="line">	&#125;</div><div class="line">	holder.textView.setText(mData.get(position));</div><div class="line">	<span class="keyword">return</span> convertView;</div><div class="line">&#125;</div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">ViewHolder</span> </span>&#123;</div><div class="line">    <span class="keyword">public</span> TextView textView;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>参考：<a href="http://www.tuicool.com/articles/vimeAj" target="_blank" rel="external">ListView的性能优化之convertView和viewHolder</a></p>
+<h3 id="RecyclerView和listview缓存机制的不同"><a href="#RecyclerView和listview缓存机制的不同" class="headerlink" title="RecyclerView和listview缓存机制的不同:"></a>RecyclerView和listview缓存机制的不同:</h3><p>ListView两级缓存，缓存的是view；RecyclerView四级缓存，缓存的是RecyclerView.ViewHolder。</p>
+<p>ListView获取缓存的流程：</p>
+<p><img src="http://s365.photo.store.qq.com/psb?/V11Sou8U3Zfby6/2tG95qhpaERuYZFU9ZmrFhHBC*Xg.QXBgKYt2koOcjk!/b/dG0BAAAAAAAA" alt=""></p>
+<p>RecyclerView获取缓存的流程：</p>
+<p><img src="http://r.photo.store.qq.com/psb?/V11Sou8U3Zfby6/bkKiiHnn*pdThURuf5M.BvjLvPim9KOMdUP6mnDucUs!/r/dG4BAAAAAAAA" alt=""></p>
+<p>参考：</p>
+<p><a href="http://kymjs.com/code/2016/07/10/01/" target="_blank" rel="external">张涛：深入浅出 RecyclerView</a></p>
+<p><a href="http://mp.weixin.qq.com/s?__biz=MzAwNDY1ODY2OQ==&amp;mid=2649286405&amp;idx=1&amp;sn=414e2d2eb577884ccee5c9076e8b8357&amp;chksm=8334c387b4434a9124f5acd93f331968a44256b8374eeafb4b1857671072b3b6364e5ec38485&amp;mpshare=1&amp;scene=1&amp;srcid=1021DYZiQRqvXgVEyhHyoEMS#rd" target="_blank" rel="external">Android ListView与RecyclerView对比浅析–缓存机制</a></p>
 
           
         
@@ -1217,7 +1271,7 @@
               
                 
                 <a class="post-title-link" href="/2017/03/24/third-article/" itemprop="url">
-                  third_article
+                  Serializable
                 </a>
               
             
@@ -1244,6 +1298,28 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -1251,7 +1327,7 @@
 
           
           
-             <span id="/2017/03/24/third-article/" class="leancloud_visitors" data-flag-title="third_article">
+             <span id="/2017/03/24/third-article/" class="leancloud_visitors" data-flag-title="Serializable">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1282,7 +1358,16 @@
       
         
           
-            <p>123456789<br>    1222222333</p>
+            <h1 id="Serializable和Parcelable的区别"><a href="#Serializable和Parcelable的区别" class="headerlink" title="Serializable和Parcelable的区别"></a>Serializable和Parcelable的区别</h1><hr>
+<p>1、作用</p>
+<p>Serializable是一种标记接口，作用是为了保存对象的属性到本地文件、数据库、网络流、rmi以方便数据传输，当然这种传输可以是程序内的也可以是两个程序间的。而Android的Parcelable的设计初衷是因为Serializable效率过慢（使用反射），为了在程序内不同组件间以及不同Android程序间(AIDL)高效的传输数据而设计，这些数据仅在内存中存在。</p>
+<p>2、效率及选择</p>
+<p>Parcelable的性能比Serializable好，因为后者在反射过程频繁GC，所以在内存间数据传输时推荐使用Parcelable，如activity间传输数据，而Serializable可将数据持久化方便保存，所以在需要保存或网络传输数据时选择Serializable，因为android不同版本Parcelable可能不同，所以不推荐使用Parcelable进行数据持久化。<br>通过intent传递复杂数据类型时必须先实现两个接口之一，对应方法分别是<code>getSerializableExtra()</code>,<code>getParcelableExtra()</code>。Parcelable方式的实现原理是将一个完整的对象进行分解，而分解后的每一部分都是Intent所支持的数据类型，这样也就实现传递对象的功能了。</p>
+<p>3、编程实现</p>
+<p>对于Serializable，类只需要实现Serializable接口。而Parcelable则需要实现writeToParcel、describeContents函数以及静态的CREATOR变量，实际上就是将如何打包和解包的工作自己来定义，而序列化的这些操作完全由底层实现。<br>Parcelable的一个实现例子如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyParcelable</span> <span class="keyword">implements</span> <span class="title">Parcelable</span> </span>&#123;</div><div class="line">     <span class="keyword">private</span> <span class="keyword">int</span> mData;</div><div class="line">     <span class="keyword">private</span> String mStr;</div><div class="line"></div><div class="line">     <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">describeContents</span><span class="params">()</span> </span>&#123;</div><div class="line">         <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">     &#125;</div><div class="line"></div><div class="line">     <span class="comment">// 写数据进行保存,flags 为1表示当前对象需要作为返回值返回。通常都是0</span></div><div class="line">     <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">writeToParcel</span><span class="params">(Parcel out, <span class="keyword">int</span> flags)</span> </span>&#123;</div><div class="line">         out.writeInt(mData);</div><div class="line">         out.writeString(mStr);</div><div class="line">     &#125;</div><div class="line"></div><div class="line">     <span class="comment">// 用来创建自定义的Parcelable的对象</span></div><div class="line">     <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Parcelable.Creator&lt;MyParcelable&gt; CREATOR</div><div class="line">             = <span class="keyword">new</span> Parcelable.Creator&lt;MyParcelable&gt;() &#123;</div><div class="line">         <span class="function"><span class="keyword">public</span> MyParcelable <span class="title">createFromParcel</span><span class="params">(Parcel in)</span> </span>&#123;</div><div class="line">             <span class="keyword">return</span> <span class="keyword">new</span> MyParcelable(in);</div><div class="line">         &#125;</div><div class="line"></div><div class="line">         <span class="keyword">public</span> MyParcelable[] newArray(<span class="keyword">int</span> size) &#123;</div><div class="line">             <span class="keyword">return</span> <span class="keyword">new</span> MyParcelable[size];</div><div class="line">         &#125;</div><div class="line">     &#125;;</div><div class="line">     </div><div class="line">     <span class="comment">// 读数据进行恢复</span></div><div class="line">     <span class="function"><span class="keyword">private</span> <span class="title">MyParcelable</span><span class="params">(Parcel in)</span> </span>&#123;</div><div class="line">         mData = in.readInt();</div><div class="line">         mStr = in.readString();</div><div class="line">     &#125;</div><div class="line"> &#125;</div></pre></td></tr></table></figure>
+<p>当类字段较多时务必保持写入和读取的类型及顺序一致。</p>
+<p>而对于Serializable来说，transient关键字修饰的变量不会被序列化，同时可以为所要序列化的类指定一个serialVersionUID。序列化和反序列化的时候是会检验类的serialVersionUID是否一致，不一致就会失败。不指定的时候serialVersionUID是由eclipse计算hash值生成。手动指定以后，当类中增加或者删除了一个成员以后反序列化依然能成功，但是当类的结构发生变化时，比如类名改了，变量类型变了，反序列化依然失败。也可以覆盖writeObject、readObject方法以实现序列化过程自定义。序列化举例：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//序列化</span></div><div class="line">File cachedFile = <span class="keyword">new</span> File(MyConstants.CACHE_FILE_PATH);</div><div class="line">ObjectOutputStream objectOutputStream = <span class="keyword">null</span>;</div><div class="line"><span class="keyword">try</span> &#123;</div><div class="line">    objectOutputStream = <span class="keyword">new</span> ObjectOutputStream(<span class="keyword">new</span> FileOutputStream(cachedFile));</div><div class="line">    objectOutputStream.writeObject(user);</div><div class="line">    &#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">    e.printStackTrace();</div><div class="line">    &#125; <span class="keyword">finally</span> &#123;</div><div class="line">    MyUtils.close(objectOutputStream);</div><div class="line">&#125;</div><div class="line"><span class="comment">//反序列化</span></div><div class="line">User user = <span class="keyword">null</span>;</div><div class="line">File cachedFile = <span class="keyword">new</span> File(MyConstants.CACHE_FILE_PATH);</div><div class="line"><span class="keyword">if</span> (cachedFile.exists()) &#123;</div><div class="line">    ObjectInputStream objectInputStream = <span class="keyword">null</span>;</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">        objectInputStream = <span class="keyword">new</span> ObjectInputStream(</div><div class="line">                <span class="keyword">new</span> FileInputStream(cachedFile));</div><div class="line">        user = (User) objectInputStream.readObject();</div><div class="line">        Log.d(TAG, <span class="string">"recover user:"</span> + user);</div><div class="line">    &#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">        e.printStackTrace();</div><div class="line">    &#125; <span class="keyword">catch</span> (ClassNotFoundException e) &#123;</div><div class="line">        e.printStackTrace();</div><div class="line">    &#125; <span class="keyword">finally</span> &#123;</div><div class="line">        MyUtils.close(objectInputStream);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 
           
         
@@ -1435,7 +1520,7 @@
 
       
         
-          <p>Activity的生命周期</br><br>1）启动：oncreate,onstart,onresume</br><br>2）当前Activity被覆盖或锁屏，onpause</br><br>3）从被覆盖回到前台或者解锁屏，onresume</br><br>4）跳转到别的activity或者按home键回到主屏，onpause,onstop</br><br>5）后退回到此activity，onrestart,onstart,onresume</br><br>6）Activity处于被覆盖或者后台不可见状态（即2/4步），由于内存不足被杀死，而后用户退回该activity，同启动过程。oncreate,onstart,onresume</br><br>7）用户退出当前activity，onpause,onstop,ondestroy</br><br>
+          <p>Activity的生命周期</br><br>1）启动：oncreate,onstart,onresume</br><br>2）当前Activity被覆盖或锁屏，onpause</br><br>3）从被覆盖回到前台或者解锁屏，onresume</br><br>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2017/03/18/second-article/#more" rel="contents">
