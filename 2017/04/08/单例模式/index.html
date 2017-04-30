@@ -1,0 +1,990 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="单例，观察者，工厂，抽象工厂，设计模式," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="单例模式
+
+定义:确保一个类只有一个实例，并且自动实例化为系统提供这个实例。
+要点：
+私有构造器
+通过静态方法或者枚举类返回单例对象
+确保多线程环境下单例只有一个
+确保单例对象在反序列化时不会重新构建对象">
+<meta property="og:type" content="article">
+<meta property="og:title" content="单例模式+观察者模式+抽象工厂模式+工厂方法模式">
+<meta property="og:url" content="https://lynnyuki.github.io/2017/04/08/单例模式/index.html">
+<meta property="og:site_name" content="Yoo">
+<meta property="og:description" content="单例模式
+
+定义:确保一个类只有一个实例，并且自动实例化为系统提供这个实例。
+要点：
+私有构造器
+通过静态方法或者枚举类返回单例对象
+确保多线程环境下单例只有一个
+确保单例对象在反序列化时不会重新构建对象">
+<meta property="og:image" content="http://s364.photo.store.qq.com/psb?/V11Sou8U3Zfby6/pq6.Tj2PNc.4dC6asEikjsBwJMfoY8veS5Gj7u6qBfc!/b/dGwBAAAAAAAA">
+<meta property="og:image" content="http://r.photo.store.qq.com/psb?/V11Sou8U3Zfby6/dnM5tRoFN285ohS3PcYDtKd9VtX.jECrRCqxoHR05Rw!/r/dG0BAAAAAAAA">
+<meta property="og:image" content="http://wiki.jikexueyuan.com/project/java-design-pattern/images/factory-pattern-1.gif">
+<meta property="og:image" content="http://r.photo.store.qq.com/psb?/V11Sou8U3Zfby6/TfQB.1tHw0MOiX1ey4o8kZlPcTnMA8Dh.H9rd0Jt4ec!/r/dIIBAAAAAAAA">
+<meta property="og:updated_time" content="2017-04-30T12:51:44.892Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="单例模式+观察者模式+抽象工厂模式+工厂方法模式">
+<meta name="twitter:description" content="单例模式
+
+定义:确保一个类只有一个实例，并且自动实例化为系统提供这个实例。
+要点：
+私有构造器
+通过静态方法或者枚举类返回单例对象
+确保多线程环境下单例只有一个
+确保单例对象在反序列化时不会重新构建对象">
+<meta name="twitter:image" content="http://s364.photo.store.qq.com/psb?/V11Sou8U3Zfby6/pq6.Tj2PNc.4dC6asEikjsBwJMfoY8veS5Gj7u6qBfc!/b/dGwBAAAAAAAA">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 'undefined',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lynnyuki.github.io/2017/04/08/单例模式/"/>
+
+
+
+
+
+  <title> 单例模式+观察者模式+抽象工厂模式+工厂方法模式 | Yoo </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?222804c1d75b15dabf155721bb7d26c1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Yoo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lynnyuki.github.io/2017/04/08/单例模式/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="LynnYuki">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar_0.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yoo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                单例模式+观察者模式+抽象工厂模式+工厂方法模式
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">posted</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-08T09:17:15+08:00">
+                2017-04-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/设计模式/" itemprop="url" rel="index">
+                    <span itemprop="name">设计模式</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/04/08/单例模式/" class="leancloud_visitors" data-flag-title="单例模式+观察者模式+抽象工厂模式+工厂方法模式">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="单例模式"><a href="#单例模式" class="headerlink" title="单例模式"></a>单例模式</h1><hr>
+<ul>
+<li>定义:确保一个类只有一个实例，并且自动实例化为系统提供这个实例。</li>
+<li>要点：<ul>
+<li>私有构造器</li>
+<li>通过静态方法或者枚举类返回单例对象</li>
+<li>确保多线程环境下单例只有一个</li>
+<li>确保单例对象在反序列化时不会重新构建对象<a id="more"></a></li>
+</ul>
+</li>
+<li><p>代码</p>
+<ul>
+<li><p>饿汉方式。指全局的单例实例在类装载时构建。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Singleton singleton = <span class="keyword">new</span> Singleton();</div><div class="line">    </div><div class="line">    <span class="comment">//限制产生多个对象</span></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span><span class="params">()</span></span>&#123;</div><div class="line">        </div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="comment">//通过该方法获得实例对象</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getSingleton</span><span class="params">()</span></span>&#123;</div><div class="line">        <span class="keyword">return</span> singleton;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="comment">//类中其他方法，尽量是static</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">doSomething</span><span class="params">()</span></span>&#123;</div><div class="line">        </div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>懒汉方式。指全局的单例实例在第一次被使用时构建。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">  <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">volatile</span> Singleton INSTANCE = <span class="keyword">null</span>;</div><div class="line"></div><div class="line">    <span class="comment">// Private constructor suppresses </span></div><div class="line">    <span class="comment">// default public constructor</span></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span><span class="params">()</span> </span>&#123;&#125;</div><div class="line"></div><div class="line">    <span class="comment">//thread safe and performance  promote </span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">synchronized</span> Singleton <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span>(INSTANCE == <span class="keyword">null</span>)&#123;</div><div class="line">            INSTANCE = <span class="keyword">new</span> Singleton();</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> INSTANCE;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>懒汉方式的优点：单例只有在需要使用的时候才会实例化，一定程度节约资源。缺点：第一次加载时需要及时进行实例化，反应稍慢，最大的问题是每次调用时都进行同步，造成不必要的同步开销。</p>
+</li>
+<li><p>DCL (Double Check Lock)实现单例</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">  <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">volatile</span> Singleton INSTANCE = <span class="keyword">null</span>;</div><div class="line"></div><div class="line">    <span class="comment">// Private constructor suppresses </span></div><div class="line">    <span class="comment">// default public constructor</span></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span><span class="params">()</span> </span>&#123;&#125;</div><div class="line"></div><div class="line">    <span class="comment">//thread safe and performance  promote </span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span>  Singleton <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span>(INSTANCE == <span class="keyword">null</span>)&#123;</div><div class="line">            <span class="keyword">synchronized</span>(Singleton.class)&#123;</div><div class="line">                <span class="comment">//when more than two threads run into the first null check same time, to avoid instanced more than one time, it needs to be checked again.</span></div><div class="line">                <span class="keyword">if</span>(INSTANCE == <span class="keyword">null</span>)&#123; </div><div class="line">                    INSTANCE = <span class="keyword">new</span> Singleton();</div><div class="line">                &#125;</div><div class="line">            &#125; </div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> INSTANCE;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>第一层判断是为了避免不必要的同步，第二层判断为了在null的情况下创建实例。<br>但是由于<code>INSTANCE = new Singleton();</code>不是原子的，大致有以下三步:       </p>
+</li>
+<li>1）给singleton的实例分配内存</li>
+<li>2）调用singleton的构造函数，初始化成员变量</li>
+<li><p>3）将INSTANCE对象指向分配的内存空间</p>
+<p>由于jdk1.5之前JMM（java内存模型）中cache，寄存器到主内存回写顺序的规定，2）和3）顺序先后是无法保证的。如果在3执行完毕，2执行之前切换到另一个线程就会导致单例未实例化。即DCL失效问题。</p>
+<p>在jdk1.5之后sun调整了JVM，将INSTANCE的定义改成 <code>private volatile static Singleton INSTANCE=null</code>就可以保证单例每次都是从内存中读取。</p>
+<p>DCL的优点：资源利用率高，第一次获取单例的时候才会实例化，效率高。缺点：第一次加载的时候反应稍慢，也由于java内存模型的原因偶尔会失败。高并发环境下也有一定缺陷，虽然发生概率较小。<br>DCL是使用最多的单例模式。</p>
+</li>
+<li><p>静态内部类实现单例：推荐，线程安全以及延迟单例的实例化。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span><span class="params">()</span></span>&#123;&#125;</div><div class="line">    </div><div class="line">    <span class="comment">//通过该方法获得实例对象</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getSingleton</span><span class="params">()</span></span>&#123;</div><div class="line">        <span class="keyword">return</span> SingletonHolder.singleton;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">SingletonHolder</span></span>&#123;</div><div class="line">        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Singleton singleton=<span class="keyword">new</span> Singleton();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>枚举单例：优点在于写法简单，线程安全，同时反序列化的时候不会创建新的对象。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">enum</span> SingletonEnum&#123;</div><div class="line">    INSTANCE;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doSomething</span><span class="params">()</span></span>&#123;</div><div class="line"></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上述方法中除了枚举外要防止反序列化时重新生成对象就必须加入以下方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> Object <span class="title">readResolve</span><span class="params">()</span> <span class="keyword">throws</span> ObjectStreamExecption</span>&#123;</div><div class="line">    <span class="keyword">return</span> INSTANCE;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>容器实现单例：多种单例类型注入到一个同意的管理类中，并通过key获取。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SingletonManager</span></span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Map&lt;String,Object&gt; objMap=<span class="keyword">new</span> HashMap&lt;String,Object&gt;();</div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="title">SingletonManager</span><span class="params">()</span></span>&#123;&#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">registerService</span><span class="params">(String key,Object INSTANCE)</span></span>&#123;</div><div class="line">        <span class="keyword">if</span>(!objMap.containsKey(key))&#123;</div><div class="line">            objMap.put(key,INSTANCE);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Object <span class="title">getService</span><span class="params">(String key)</span></span>&#123;</div><div class="line">        <span class="keyword">return</span> objMap.get(key);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<p>Android中较为推荐的是双重检验锁和静态内部类实现的单例模式。</p>
+<h1 id="Adapter中的观察者模式"><a href="#Adapter中的观察者模式" class="headerlink" title="Adapter中的观察者模式"></a>Adapter中的观察者模式</h1><h5>什么是观察者模式</h5><br>结构<br><img src="http://s364.photo.store.qq.com/psb?/V11Sou8U3Zfby6/pq6.Tj2PNc.4dC6asEikjsBwJMfoY8veS5Gj7u6qBfc!/b/dGwBAAAAAAAA" alt="Alt text"><br>观察者模式是对象的行为模式，又叫发布-订阅(Publish/Subscribe)模式、模型-视图(Model/View)模式、源-监听器(Source/Listener)模式或从属者(Dependents)模式。<br>观察者模式定义了一种一对多的依赖关系，让多个观察者对象同时监听某一个主题对象。这个主题对象在状态上发生变化时，会通知所有观察者对象，使它们能够自动更新自己。<br><h5>观察者模式所涉及的角色有：</h5><br><li>抽象主题(Subject)角色：抽象主题角色把所有对观察者对象的引用保存在一个聚集（比如ArrayList对象）里，每个主题都可以有任何数量的观察者。抽象主题提供一个接口，可以增加和删除观察者对象，抽象主题角色又叫做抽象被观察者(Observable)角色。</li><br><li>具体主题(ConcreteSubject)角色：将有关状态存入具体观察者对象；在具体主题的内部状态改变时，给所有登记过的观察者发出通知。具体主题角色又叫做具体被观察者(Concrete Observable)角色。</li><br><li>抽象观察者(Observer)角色：为所有的具体观察者定义一个接口，在得到主题的通知时更新自己，这个接口叫做更新接口。</li><br><li>具体观察者(ConcreteObserver)角色：存储与主题的状态自恰的状态。具体观察者角色实现抽象观察者角色所要求的更新接口，以便使本身的状态与主题的状态 像协调。如果需要，具体观察者角色可以保持一个指向具体主题对象的引用。</li><br><br><h5>观察者模式的python代码实现:</h5>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">AbstractSubject</span><span class="params">(object)</span>:</span></div><div class="line">		 <span class="function"><span class="keyword">def</span> <span class="title">register</span><span class="params">(self, listener)</span>:</span></div><div class="line">        <span class="keyword">raise</span> NotImplementedError(<span class="string">"Must subclass me"</span>)</div><div class="line"> </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">deregister</span><span class="params">(self, listener)</span>:</span></div><div class="line">        <span class="keyword">raise</span> NotImplementedError(<span class="string">"Must subclass me"</span>)</div><div class="line"> </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">notify_listeners</span><span class="params">(self, event)</span>:</span></div><div class="line">        <span class="keyword">raise</span> NotImplementedError(<span class="string">"Must subclass me"</span>)</div><div class="line"> </div><div class="line">	<span class="class"><span class="keyword">class</span> <span class="title">Listener</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, subject)</span>:</span></div><div class="line">        self.name = name</div><div class="line">        subject.register(self)</div><div class="line"> </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">notify</span><span class="params">(self, event)</span>:</span></div><div class="line">        <span class="keyword">print</span> self.name, <span class="string">"received event"</span>, event</div><div class="line"> </div><div class="line">	<span class="class"><span class="keyword">class</span> <span class="title">Subject</span><span class="params">(AbstractSubject)</span>:</span></div><div class="line">	    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></div><div class="line">	        self.listeners = []</div><div class="line">	        self.data = <span class="keyword">None</span></div><div class="line"></div><div class="line">	    <span class="function"><span class="keyword">def</span> <span class="title">getUserAction</span><span class="params">(self)</span>:</span></div><div class="line">	        self.data = raw_input(<span class="string">'Enter something to do:'</span>)</div><div class="line">	        <span class="keyword">return</span> self.data</div><div class="line"></div><div class="line">    <span class="comment"># Implement abstract Class AbstractSubject</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">register</span><span class="params">(self, listener)</span>:</span></div><div class="line">        self.listeners.append(listener)</div><div class="line"> </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">deregister</span><span class="params">(self, listener)</span>:</span></div><div class="line">        self.listeners.remove(listener)</div><div class="line"> </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">notify_listeners</span><span class="params">(self, event)</span>:</span></div><div class="line">        <span class="keyword">for</span> listener <span class="keyword">in</span> self.listeners:</div><div class="line">            listener.notify(event)</div><div class="line">	  <span class="keyword">if</span> __name__==<span class="string">"__main__"</span>:</div><div class="line">    <span class="comment"># make a subject object to spy on</span></div><div class="line">    subject = Subject()</div><div class="line"> </div><div class="line">    <span class="comment"># register two listeners to monitor it.</span></div><div class="line">    listenerA = Listener(<span class="string">"&lt;listener A&gt;"</span>, subject)</div><div class="line">    listenerB = Listener(<span class="string">"&lt;listener B&gt;"</span>, subject)</div><div class="line"> </div><div class="line">    <span class="comment"># simulated event</span></div><div class="line">    subject.notify_listeners (<span class="string">"&lt;event 1&gt;"</span>)</div><div class="line">    <span class="comment"># outputs:</span></div><div class="line">    <span class="comment">#     &lt;listener A&gt; received event &lt;event 1&gt;</span></div><div class="line">    <span class="comment">#     &lt;listener B&gt; received event &lt;event 1&gt;</span></div><div class="line"> </div><div class="line">    action = subject.getUserAction()</div><div class="line">    subject.notify_listeners(action)</div><div class="line">    <span class="comment">#Enter something to do:hello</span></div><div class="line">    <span class="comment"># outputs:</span></div><div class="line">    <span class="comment">#     &lt;listener A&gt; received event hello</span></div><div class="line">    <span class="comment">#     &lt;listener B&gt; received event hello</span></div></pre></td></tr></table></figure>
+<p>在listview中，我们知道，当数据变化时，listview呈现的内容是会更新的。这实际上是用到了adapter中的观察者模式（当然listview中利用了adapter模式，这个以后再讲）。adapter内部有一个可观察者类，listview则作为他的一个观察者，将adapter设置给listview时，listview会被注册到这个观察者对象中。接下来我们就从adapter的源码入手，分析一下。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setAdapter</span><span class="params">(ListAdapter adapter)</span></span>&#123;</div><div class="line">  resetList();</div><div class="line">  <span class="comment">//清空视图缓存mRecycler</span></div><div class="line">  mRecycler.clear();</div><div class="line">  <span class="keyword">if</span> (mAdapter!=<span class="keyword">null</span>) &#123;</div><div class="line">    mDataSetObserver=<span class="keyword">new</span> AdapterDataSetObserver();</div><div class="line">    mAdapter.registerDataSetObserver(mDataSetObserver);</div><div class="line">  &#125;<span class="keyword">else</span> &#123;</div><div class="line">    <span class="comment">//代码省略</span></div><div class="line">  &#125;</div><div class="line">  requestLayout();</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>从以上程序中我们可以看出，设置adapter时创建了一个AdapterDataSetObserver对象，并注册到adapter中。刚才不是说listview是观察者吗？这会儿怎么成了AdapterDataSetObserver了。我们先放下这个疑问继续往下看。<br>首先我们看常用的adapter基类BaseAdapter，部分代码如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">BaseAdapter</span> <span class="keyword">implements</span> <span class="title">ListAdapter</span>,<span class="title">SpinnerAdapter</span></span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">final</span> DataSetObservable mDataSetObservable=<span class="keyword">new</span> DataSetObservable();</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">registerDataSetObserver</span><span class="params">(DataSetObserver dataSetObserver)</span></span>&#123;</div><div class="line">        mDataSetObservable.registerObserver(dataSetObserver);</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">notifyDataSetChanged</span><span class="params">()</span></span>&#123;</div><div class="line">        mDataSetObservable.notifyChanged();</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="comment">//代码省略</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>从以上可以看出，注册观察者实际上调用了DataSetObeservable对应的函数。DataSetObeservable拥有一个观察者集合，当可观察者改变时，就会通知观察者做出相应的处理。<br>当adapter的数据变化时，我们会调用adapter的notifyDataSetChanged函数，该函数又会调用DataSetObeservable对象的notifyChanged（）函数通知所有观察者数据发生了变化，使观察者进行相应的操作。代码如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DataSetObeservable</span> <span class="keyword">extends</span> <span class="title">Observable</span>&lt;<span class="title">DataSetObeserver</span>&gt;</span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">notifyChanged</span><span class="params">()</span></span>&#123;</div><div class="line">        <span class="keyword">synchronized</span> (mObservers)&#123;</div><div class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i=mObservers.size()-<span class="number">1</span>;i&gt;=<span class="number">0</span>;i--)&#123;</div><div class="line">                mObservers.get(i).onChanged();<span class="comment">//调用观察者的onChanged（）函数</span></div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>对listview来说这个观察者就是AdapterDataSetObeserver对象，该类声明在AdapterView中，也是listview的一个父类。AdapterDataSetObeserver代码如下<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//AdapterView的内部类AdapterDataSetObeserver中</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">AdapterDataSetObeserver</span> <span class="keyword">extends</span> <span class="title">DataSetObserver</span></span>&#123;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onChanged</span><span class="params">()</span> </span>&#123;</div><div class="line">        mDataChanged=<span class="keyword">true</span>;</div><div class="line">        mOldItemCount=mItemCount;</div><div class="line">        <span class="comment">//获取元素个数</span></div><div class="line">        mItemCount=getAdapter().getCount();</div><div class="line">        <span class="comment">//代码省略</span></div><div class="line">        </div><div class="line">        checkFocus();</div><div class="line">        <span class="comment">//重新布局</span></div><div class="line">        requestLayout();</div><div class="line">    &#125;</div><div class="line">    <span class="comment">//代码省略</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>在AdapterDataSetObeserver的onChanged()函数中会调用viewGroup的requestLayout()进行重新策略，布局，绘制整个listview的item view，执行完之后，整个listview的元素就发生了变化。</p>
+<p>现在我们回到之前的额问题，就是listview不是观察者，而AdapterDataSetObeserver才是真正的观察者的问题。在AdapterDataSetObeserver的onChanged()函数中实际调用的是AdapterView中的方法来完成功能，所以AdapterDataSetObeserver只是在外层做了一层封装，真正核心的功能应该是AdapterView。listview就是通过Adapter模式，观察者模式，item view复用机理实现了高效列表显示。<br>这里对于item view的复用机理介绍一下：<br>在Adapter中要重写四个函数：</p>
+<p><li>getCount()获取数据个数</li></p>
+<p><li>getItem(int)获取指定位置的数据</li></p>
+<p><li>getItemId(int)获取position位置的id，一般就返回position即可</li></p>
+<p><li>getView(int,View,ViewGroup)获取position上的ItemView视图。<br>当处理数据量较大时，对于滚出屏幕外的item view会进入listview的一个Recycler中，Recycler将视图缓存。当屏幕滑动加载新的itemview时，如果该视图存在，则直接从缓存中取出，如果过不存在就直接创建新的视图。这也就是为什么用viewholder可以优化listview的原因。</li></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> View <span class="title">getView</span><span class="params">(<span class="keyword">int</span> position, View convertView, ViewGroup parent)</span> </span>&#123;</div><div class="line">        ViewHolder viewHolder=<span class="keyword">null</span>;</div><div class="line">        <span class="keyword">if</span>(convertView==<span class="keyword">null</span>)&#123;</div><div class="line">            viewHolder=<span class="keyword">new</span> ViewHolder();</div><div class="line">            convertView=mInflater.inflate(R.layout.medal_item,<span class="keyword">null</span>);</div><div class="line">            viewHolder.medal_item_tv= (TextView) convertView.findViewById(R.id.medal_tv_item);</div><div class="line">            convertView.setTag(viewHolder);</div><div class="line">        &#125;<span class="keyword">else</span>&#123;</div><div class="line">            viewHolder= (ViewHolder) convertView.getTag();</div><div class="line">        &#125;</div><div class="line">        viewHolder.medal_item_tv.setText(data.get(position));</div><div class="line">        <span class="keyword">return</span> convertView;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">ViewHolder</span></span>&#123;</div><div class="line">        <span class="keyword">public</span> TextView medal_item_tv;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<h1 id="抽象工厂模式"><a href="#抽象工厂模式" class="headerlink" title="抽象工厂模式"></a>抽象工厂模式</h1><hr>
+<ul>
+<li>定义：为创建一组相关或相互依赖的对象提供一个接口，而且无需指定他们的具体类。</li>
+<li>UML类图：</li>
+</ul>
+<p><img src="http://r.photo.store.qq.com/psb?/V11Sou8U3Zfby6/dnM5tRoFN285ohS3PcYDtKd9VtX.jECrRCqxoHR05Rw!/r/dG0BAAAAAAAA" alt=""></p>
+<ul>
+<li>代码示例：<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">AbstractCreator</span> </span>&#123;</div><div class="line"></div><div class="line">	<span class="comment">//创建A产品家族</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> AbstractProductA <span class="title">createProductA</span><span class="params">()</span></span>;</div><div class="line"></div><div class="line">	<span class="comment">//创建B产品家族</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> AbstractProductB <span class="title">createProductB</span><span class="params">()</span></span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Creator1</span> <span class="keyword">extends</span> <span class="title">AbstractCreator</span> </span>&#123;</div><div class="line"></div><div class="line">  <span class="comment">//只生产产品等级为1的A产品</span></div><div class="line">  <span class="function"><span class="keyword">public</span> AbstractProductA <span class="title">createProductA</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">new</span> ProductA1();</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="comment">//只生产铲平等级为1的B产品</span></div><div class="line">  <span class="function"><span class="keyword">public</span> AbstractProductB <span class="title">createProductB</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">new</span> ProductB1();</div><div class="line">  &#125;</div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Creator2</span> <span class="keyword">extends</span> <span class="title">AbstractCreator</span> </span>&#123;</div><div class="line"></div><div class="line">  <span class="comment">//只生产产品等级为2的A产品</span></div><div class="line">  <span class="function"><span class="keyword">public</span> AbstractProductA <span class="title">createProductA</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">new</span> ProductA2();</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="comment">//只生产铲平等级为2的B产品</span></div><div class="line">  <span class="function"><span class="keyword">public</span> AbstractProductB <span class="title">createProductB</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">new</span> ProductB2();</div><div class="line">  &#125;</div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Client</span> </span>&#123;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">		<span class="comment">//定义出两个工厂</span></div><div class="line">		AbstractCreator creator1 = <span class="keyword">new</span> Creator1();</div><div class="line">		AbstractCreator creator2 = <span class="keyword">new</span> Creator2();</div><div class="line">		</div><div class="line">		<span class="comment">//产生A1对象</span></div><div class="line">		AbstractProductA a1 =  creator1.createProductA();</div><div class="line">		<span class="comment">//产生A2对象</span></div><div class="line">		AbstractProductA a2 = creator2.createProductA();</div><div class="line">		<span class="comment">//产生B1对象</span></div><div class="line">		AbstractProductB b1 = creator1.createProductB();</div><div class="line">		<span class="comment">//产生B2对象</span></div><div class="line">		AbstractProductB b2 = creator2.createProductB();</div><div class="line">		</div><div class="line">		<span class="comment">/*</span></div><div class="line">		 * 然后在这里就可以为所欲为了...</div><div class="line">		 */</div><div class="line">		</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<hr>
+<h1 id="工厂方法模式"><a href="#工厂方法模式" class="headerlink" title="工厂方法模式"></a>工厂方法模式</h1><hr>
+<ul>
+<li>定义：定义一个创建对象的接口，但让实现这个接口的类来决定实例化哪个类。工厂方法让类的实例化推迟到子类中进行。</li>
+<li>UML类图：<br><br><img src="http://wiki.jikexueyuan.com/project/java-design-pattern/images/factory-pattern-1.gif" alt=""></li>
+<li>举例：女娲造人（详情见《设计模式之禅》第八章）<br><br><img src="http://r.photo.store.qq.com/psb?/V11Sou8U3Zfby6/TfQB.1tHw0MOiX1ey4o8kZlPcTnMA8Dh.H9rd0Jt4ec!/r/dIIBAAAAAAAA" alt="Alt text"><br><br>这里重点给出工厂的代码<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">AbstractHumanFactory</span> </span>&#123;</div><div class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> &lt; T extends Human&gt; <span class="function">T <span class="title">createHuman</span><span class="params">(Class&lt; T&gt; c)</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>这里T必须满足：是class类型，并且是human的实现类。<br>工厂子类如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HumanFactory</span> <span class="keyword">extends</span> <span class="title">AbstractHumanFactory</span> </span>&#123;</div><div class="line"><span class="keyword">public</span> &lt; T extends Human&gt; <span class="function">T <span class="title">createHuman</span><span class="params">(Class&lt; T&gt; c)</span></span>&#123;</div><div class="line"><span class="comment">//定义一个生产的人种</span></div><div class="line">Human human=<span class="keyword">null</span>;</div><div class="line"><span class="keyword">try</span> &#123;</div><div class="line"><span class="comment">//产生一个人种</span></div><div class="line">human = (T)Class.forName(c.getName()).newInstance();</div><div class="line">&#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">System.out.println(<span class="string">"人种生成错误！"</span>);</div><div class="line">&#125;</div><div class="line"><span class="keyword">return</span> (T)human;</div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<ul>
+<li><p>完整的实现代码模板如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//抽象产品类</span></div><div class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Product</span></span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">method1</span><span class="params">()</span></span>&#123;&#125;<span class="comment">//公共方法</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">method2</span><span class="params">()</span></span>;<span class="comment">//抽象方法</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//具体产品类</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">CreateProduct1</span> <span class="keyword">extends</span> <span class="title">Product</span></span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">method2</span><span class="params">()</span></span>&#123;&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">CreateProduct2</span> <span class="keyword">extends</span> <span class="title">Product</span></span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">method2</span><span class="params">()</span></span>&#123;&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//抽象工厂</span></div><div class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Creator</span></span>&#123;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">abstract</span> &lt; T extends Product&gt; <span class="function">T <span class="title">createProduct</span><span class="params">(Class&lt; T&gt; c)</span></span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//具体工厂</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">CreateCreator</span> <span class="keyword">extends</span> <span class="title">Creator</span></span>&#123;</div><div class="line">    <span class="keyword">public</span> &lt; T extends Product&gt; <span class="function">T <span class="title">createProduct</span><span class="params">(Class&lt; T&gt; c)</span></span>&#123;</div><div class="line">        Product p = <span class="keyword">null</span>;</div><div class="line">        <span class="keyword">try</span>&#123;</div><div class="line">            p = (Product) Class.forName(c.getName()).newInstance();</div><div class="line">        &#125;<span class="keyword">catch</span>(Exception e)&#123;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> (T)p;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="comment">//场景类</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Client</span></span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</div><div class="line">        Creator creator = <span class="keyword">new</span> CreateCreator();</div><div class="line">        Product p = creator.createProduct(CreateProduct1.class);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>优点：</p>
+<ul>
+<li>首先：良好的封装性，降低模块间的耦合。比如创建一个产品对象，只需要知道其类名或者约束字符串就可以了。</li>
+<li>其次：扩展性好。增加产品类时只需要适当修改工厂具体类或者新建工厂类就可以拥抱变化。</li>
+<li>再次：屏蔽产品类。产品类的实现如何变化，调用者都不用关心，只要求产品接口保持不变。例如：使用JDBC连接数据库，数据库从MySQL切换到Oracle，只需要改动一下驱动的名称。</li>
+<li>最后：工厂方法模式是典型的解耦框架。高层模块只需要知道产品的抽象类，其他的实<br>现类都不用关心，符合迪米特法则，我不需要的就不要去交流；也符合依赖倒置原则，只依<br>赖产品类的抽象；当然也符合里氏替换原则，使用产品子类替换产品父类</li>
+</ul>
+</li>
+<li><p>使用场景</p>
+<ul>
+<li>工厂方法模式是new一个对象的替代品，所以在需要new 对象的地方都可以使用。但需慎重考虑是否要增加一个工厂类进行管理，以免增加代码复杂度。</li>
+<li>需要灵活的、可扩展的框架时，可以考虑。ex：设计一个连接邮件服务器的框架，POP3、IMAP、HTTP三协议的连接方式作为产品类来处理。当某些邮件服务器扩展了webservice协议时，只需要增加webservice的产品类</li>
+<li>可以用在异构项目中。<br>ex：通过webservice与一个非java的项目交互，虽然webServcie号称是可以做到异构系统的同构化，但是在实际的开发中，会碰到类型问题、WSDL文件的支持问题等。从WSDL中产生的对象都认为是一个产品，然后由具体工厂管理，减少与外围的耦合。</li>
+<li>可以使用在测试框架中。ex：测试类A，就需要把与A有联系的B也同时产生出来。可以使用工厂方法模式把B虚拟出来，避免A与B 的耦合。可对比JMock、EasyMock。</li>
+</ul>
+</li>
+<li>扩展<ul>
+<li>简单工厂模式：一个模块只需要一个工厂类，没必要new工厂实例出来，只需要使用静态方法即可。<br></li>
+</ul>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//具体工厂</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">CreateCreator</span> </span>&#123;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt; T extends Product&gt; <span class="function">T <span class="title">createProduct</span><span class="params">(Class&lt; T&gt; c)</span></span>&#123;</div><div class="line">        Product p = <span class="keyword">null</span>;</div><div class="line">        <span class="keyword">try</span>&#123;</div><div class="line">            p = (Product) Class.forName(c.getName()).newInstance();</div><div class="line">        &#125;<span class="keyword">catch</span>(Exception e)&#123;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> (T)p;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="comment">//场景类</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Client</span></span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</div><div class="line">            Product p = CreateCreator.createProduct(CreateProduct1.class);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li><p>多工厂类：项目比较复杂，初始化一个对象比较费力（设定初始值），所有产品类都放在一个工厂方法中进行初始化会使代码结构不清晰。为每个产品定义一个创造者，然后由调用者自己去选择与哪个工厂方法关联。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//具体工厂1</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">CreateCreator1</span> <span class="keyword">extends</span> <span class="title">Creator</span></span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> Product <span class="title">createProduct</span><span class="params">()</span></span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> CreateProduct1();</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="comment">//具体工厂2</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">CreateCreator2</span> <span class="keyword">extends</span> <span class="title">Creator</span></span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> Product <span class="title">createProduct</span><span class="params">()</span></span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> CreateProduct2();</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="comment">//场景类</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Client</span></span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</div><div class="line">        Product cp1 = (<span class="keyword">new</span> CreateCreator1()).createProduct();</div><div class="line">        Product cp2 = (<span class="keyword">new</span> CreateCreator2()).createProduct();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>替代单例模式.不让通过正常方式new一个产品对象，而是通过工厂用反射的方法创建对象。项目中可以建一个单例构造器，只要输入单例的类型就可以获得唯一的实例。通过获得类构造器，然后设置访问权限，生成一个对象，然后提供外部访问，保证内存<br>中的对象唯一。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Singleton</span></span>&#123;</div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span><span class="params">()</span></span>&#123;&#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doSomething</span><span class="params">()</span></span>&#123;&#125;</div><div class="line">&#125;</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">SingletonFactory</span></span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Singleton single;</div><div class="line">    <span class="keyword">static</span>&#123;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            Class cls = Class.forName(Singleton.class.getName());</div><div class="line">            Constructor constructor = cls.getDeclaredConstructor();</div><div class="line">            constructor.setAccessible(<span class="keyword">true</span>);</div><div class="line">            single = (Singleton) constructor.newInstance();</div><div class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getSingleton</span><span class="params">()</span></span>&#123;</div><div class="line">        <span class="keyword">return</span> single;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>延迟初始化：一个对象被消费完毕，不立即释放，工厂类保持其初始状态，等待再次被使用。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ProductFactory</span> </span>&#123;</div><div class="line">	<span class="comment">// 缓存容器</span></div><div class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Map&lt; String, Product&gt; prMap = <span class="keyword">new</span> HashMap&lt; String, Product&gt;();</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">synchronized</span> Product <span class="title">createProduct</span><span class="params">(String type)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">		Product product = <span class="keyword">null</span>;</div><div class="line">		<span class="keyword">if</span> (prMap.containsKey(type))&#123;</div><div class="line">			product = prMap.get(type);</div><div class="line">		&#125; <span class="keyword">else</span> &#123;</div><div class="line">			<span class="keyword">if</span> (type.equals(<span class="string">"Product1"</span>)) &#123;</div><div class="line">				product = <span class="keyword">new</span> ConcreteProduct1();</div><div class="line">			&#125; <span class="keyword">else</span> &#123;</div><div class="line">				product = <span class="keyword">new</span> ConcreteProduct2();</div><div class="line">			&#125;</div><div class="line">			<span class="comment">// 同时把对象放到缓存容器中</span></div><div class="line">			prMap.put(type, product);</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">return</span> product;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>延迟加载框架是可以扩展的，例如限制某一个产品类的最大实例化数量，可以通过判断<br>Map中已有的对象数量来实现，这样的处理是非常有意义的，例如JDBC连接数据库，都会<br>要求设置一个MaxConnections最大连接数量，该数量就是内存中最大实例化的数量。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/单例，观察者，工厂，抽象工厂，设计模式/" rel="tag"># 单例，观察者，工厂，抽象工厂，设计模式</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/04/04/Android中的消息机制和多线程/" rel="next" title="Android中的消息机制和多线程">
+                <i class="fa fa-chevron-left"></i> Android中的消息机制和多线程
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/04/11/e/" rel="prev" title="e">
+                e <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar_0.jpg"
+               alt="LynnYuki" />
+          <p class="site-author-name" itemprop="name">LynnYuki</p>
+           
+              <p class="site-description motion-element" itemprop="description">The best time to plant a tree was a decade ago. 				The second best time is now.</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">Post</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">Categories</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">Tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#单例模式"><span class="nav-number">1.</span> <span class="nav-text">单例模式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Adapter中的观察者模式"><span class="nav-number">2.</span> <span class="nav-text">Adapter中的观察者模式</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">2.0.0.0.1.</span> <span class="nav-text">什么是观察者模式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">2.0.0.0.2.</span> <span class="nav-text">观察者模式所涉及的角色有：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">2.0.0.0.3.</span> <span class="nav-text">观察者模式的python代码实现:</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#抽象工厂模式"><span class="nav-number">3.</span> <span class="nav-text">抽象工厂模式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#工厂方法模式"><span class="nav-number">4.</span> <span class="nav-text">工厂方法模式</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">LynnYuki</span>
+</div>
+
+
+<div class="powered-by">
+  <a class="theme-link" href="https://hexo.io">Hexo</a> 
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("RtiqcyaXN0FNuaRTjaucOixs-gzGzoHsz", "X8b8SrHC7V6ydIwEVJxwbvbG");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+
+  
+
+</body>
+</html>
