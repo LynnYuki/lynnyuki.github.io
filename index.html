@@ -1349,7 +1349,7 @@
               
                 
                 <a class="post-title-link" href="/2017/03/18/second-article/" itemprop="url">
-                  よ
+                  android基础杂记（查漏补缺）
                 </a>
               
             
@@ -1383,7 +1383,7 @@
 
           
           
-             <span id="/2017/03/18/second-article/" class="leancloud_visitors" data-flag-title="よ">
+             <span id="/2017/03/18/second-article/" class="leancloud_visitors" data-flag-title="android基础杂记（查漏补缺）">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1414,7 +1414,12 @@
       
         
           
-            <center>实现了评论，阅读统计，留言板，标签等功能</center>
+            <p>Activity的生命周期<br><br>1）启动：oncreate,onstart,onresume<br><br>2）当前Activity被覆盖或锁屏，onpause<br><br>3）从被覆盖回到前台或者解锁屏，onresume<br><br>4）跳转到别的activity或者按home键回到主屏，onpause,onstop<br><br>5）后退回到此activity，onrestart,onstart,onresume<br><br>6）Activity处于被覆盖或者后台不可见状态（即2/4步），由于内存不足被杀死，而后用户退回该activity，同启动过程。oncreate,onstart,onresume<br><br>7）用户退出当前activity，onpause,onstop,ondestroy<br></p>
+<p><img src="./pic1.png" alt=""></p>
+<p>activity之间传递数据<br>1.intent。用于数据比较少。Intent intent=new Intent();intent.putExtra(“key”,value);intent.setClass(CurrentActivity.this,AnotherActivity.class);startActivity(intent)<br>getIntent().getStringExtra(“key”)获取<br><br>2.Intent intent=new Intent(CurrentActivity.this,AnotherActivity.class )通过bundle.putXxx(“key”)存数据（HashMap），getXxx()取数据，intent.putExtra(bundle)<br><br>Broadcast Receiver<br><br>service的生命周期：oncreate(),onstart(),ondestroy()需要在androidmanifest.xml中注册<br><br>contentprovider没用过<br><br>startActivityForReault()/onActivityReault()用于从调用的另一个activity中获取数据<br>intent可给除了contentprovider之外的三大组件传递数据<br></p>
+<p>android布局关系图：<br><img src="./Image.png" alt=""><br>android布局高级技术：<br><br>1.重用布局。<include android:id="@+id/myid" layout="@layout/activity_main">还可以加上宽高自定义<br>在被重用的布局中声明merge，可以消除不必要的viewgroup。（比如两个垂直的linearlayout）<br><br>2.动态装载布局，即在activity中用java手撸xml<br><br>3.splash添加程序启动画面。在xml中定义一张图片作为启动画面，然后定义一个activity绑定该视图，经一两秒跳转到MainActiivity。<br></include></p>
+<p><pre><code>private final int Splash_Display_Length=2000;<br>new Handler().postDelayed(new Runnable(){<br>  public void run(){<br>    Intent i=new Intent(SplashActivity.this,MainActivity.class);<br>    SplashActivity.this.startActivity(i);<br>    SplashActivity.this.finish();<br>  }<br>},Splash_Display_Length);</code></pre><br>但是不推荐使用，现代APP应该是简洁易于使用的。<br><br>button包括：ToggleButton(开关按钮)，常用属性设置。android:textOn=’’选择时的文字’’，textOff类似<br><br>RadioButton（单选按钮）<br><br>CheckBox(复选框)<br><br>ImageButton<br><br>spinner下拉列表，通过android：entries属性设置下拉选项所在的xml<br><br>webview里面两个重要函数，setWebChromeClient()设置加载中和加载完成时的动作。SetWebViewClient()中重写shouldOverrideUrlLoading()以保证点击链接是还在此WebView中跳转，而不是跳转到自带浏览器<br>webView可以直接和JS交互，具体自己写个demo试下。<br><br>angularJS<br></p>
+
           
         
       
