@@ -93,7 +93,7 @@
 <meta property="og:url" content="https://lynnyuki.github.io/2017/04/11/抽象类和接口/index.html">
 <meta property="og:site_name" content="Yoo">
 <meta property="og:description" content="抽象类与接口是Java语言中对抽象概念进行定义的两种机制，正是由于他们的存在才赋予java强大的面向对象的能力。他们两者之间对抽象概念的支持有很大的相似，甚至可以互换，但是也有区别。">
-<meta property="og:updated_time" content="2017-04-30T14:20:16.347Z">
+<meta property="og:updated_time" content="2017-04-30T14:44:17.609Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="抽象类和接口">
 <meta name="twitter:description" content="抽象类与接口是Java语言中对抽象概念进行定义的两种机制，正是由于他们的存在才赋予java强大的面向对象的能力。他们两者之间对抽象概念的支持有很大的相似，甚至可以互换，但是也有区别。">
@@ -397,12 +397,12 @@
 <p>　　我们有一个Door的抽象概念，它具备两个行为open()和close()，此时我们可以定义通过抽象类和接口来定义这个抽象概念：<br>      抽象类：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="number">1</span>.<span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Door</span></span>&#123;  </div><div class="line"><span class="number">2</span>.    <span class="function"><span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">open</span><span class="params">()</span></span>;  </div><div class="line"><span class="number">3</span>.    <span class="function"><span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">close</span><span class="params">()</span>；  </span></div><div class="line">4.&#125;  </div><div class="line"></div><div class="line">      接口</div><div class="line"></div><div class="line">1.interface Door&#123;  </div><div class="line"><span class="number">2</span>.    <span class="function"><span class="keyword">void</span> <span class="title">open</span><span class="params">()</span></span>;  </div><div class="line"><span class="number">3</span>.    <span class="function"><span class="keyword">void</span> <span class="title">close</span><span class="params">()</span></span>;  </div><div class="line"><span class="number">4</span>.&#125;</div></pre></td></tr></table></figure></p>
 <p>　　至于其他的具体类可以通过使用extends使用抽象类方式定义Door或者Implements使用接口方式定义Door，这里发现两者并没有什么很大的差异。<br>但是现在如果我们需要门具有报警的功能，那么该如何实现呢？<br><strong>解决方案一：给Door增加一个报警方法:clarm();</strong></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="number">1</span>.bstract <span class="class"><span class="keyword">class</span> <span class="title">Door</span></span>&#123;  </div><div class="line"><span class="number">2</span>.    <span class="function"><span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">open</span><span class="params">()</span></span>;  </div><div class="line"><span class="number">3</span>.    <span class="function"><span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">close</span><span class="params">()</span></span>;  </div><div class="line"><span class="number">4</span>.    <span class="function"><span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">alarm</span><span class="params">()</span></span>;  </div><div class="line"><span class="number">5</span>.&#125;  </div><div class="line"></div><div class="line">       或者</div><div class="line"><span class="number">1</span>.interface Door&#123;  </div><div class="line"><span class="number">2</span>.    <span class="function"><span class="keyword">void</span> <span class="title">open</span><span class="params">()</span></span>;  </div><div class="line"><span class="number">3</span>.    <span class="function"><span class="keyword">void</span> <span class="title">close</span><span class="params">()</span></span>;  </div><div class="line"><span class="number">4</span>.    <span class="function"><span class="keyword">void</span> <span class="title">alarm</span><span class="params">()</span></span>;  </div><div class="line"><span class="number">5</span>.&#125;</div></pre></td></tr></table></figure>
-<p> 这种方法违反了面向对象设计中的一个核心原则 ISP (Interface Segregation Principle)[^footnote]—见批注，在Door的定义中把Door概念本身固有的行为方法和另外一个概念”报警器”的行为方 法混在了一起。这样引起的一个问题是那些仅仅依赖于Door这个概念的模块会因为”报警器”这个概念的改变而改变，反之依然。</p>
+<p> 这种方法违反了面向对象设计中的一个核心原则 [^1]ISP(Interface Segregation Principle)—见批注，在Door的定义中把Door概念本身固有的行为方法和另外一个概念”报警器”的行为方 法混在了一起。这样引起的一个问题是那些仅仅依赖于Door这个概念的模块会因为”报警器”这个概念的改变而改变，反之依然。</p>
 <p><strong>解决方案二 </strong></p>
 <p> 既然open()、close()和alarm()属于两个不同的概念，那么我们依据ISP原则将它们分开定义在两个代表两个不同概念的抽象类里面，定义的方式有三种：<br>1.两个都使用抽象类来定义。<br>      2.两个都使用接口来定义。<br>      3.一个使用抽象类定义，一个是用接口定义。<br>      由于java不支持多继承所以第一种是不可行的。后面两种都是可行的，但是选择何种就反映了你对问题域本质的理解。</p>
 <p>　　如果选择第二种都是接口来定义，那么就反映了两个问题：<br>1.我们可能没有理解清楚问题域，AlarmDoor在概念本质上到底是门还报警器。<br>2.如果我们对问题域的理解没有问题，比如我们在分析时确定了AlarmDoor在本质上概念是一致的，那么我们在设计时就没有正确的反映出我们的设计意图。因为你使用了两个接口来进行定义，他们概念的定义并不能够反映上述含义。<br>    第三种，如果我们对问题域的理解是这样的：AlarmDoor本质上Door，但同时它也拥有报警的行为功能，这个时候我们使用第三种方案恰好可以阐述我们的设计意图。AlarmDoor本质是们，所以对于这个概念我们使用抽象类来定义，同时AlarmDoor具备报警功能，说明它能够完成报警概念中定义的行为功能，所以alarm可以使用接口来进行定义。如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="number">1</span>.<span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Door</span></span>&#123;  </div><div class="line"><span class="number">2</span>.    <span class="function"><span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">open</span><span class="params">()</span></span>;  </div><div class="line"><span class="number">3</span>.    <span class="function"><span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">close</span><span class="params">()</span></span>;  </div><div class="line"><span class="number">4</span>.&#125;  </div><div class="line"><span class="number">5</span>.  </div><div class="line"><span class="number">6</span>.interface Alarm&#123;  </div><div class="line"><span class="number">7</span>.    <span class="function"><span class="keyword">void</span> <span class="title">alarm</span><span class="params">()</span></span>;  </div><div class="line"><span class="number">8</span>.&#125;  </div><div class="line"><span class="number">9</span>.  </div><div class="line"><span class="number">10</span>.class AlarmDoor extends Door implements Alarm&#123;  </div><div class="line"><span class="number">11</span>.    <span class="function"><span class="keyword">void</span> <span class="title">open</span><span class="params">()</span></span>&#123;&#125;  </div><div class="line"><span class="number">12</span>.    <span class="function"><span class="keyword">void</span> <span class="title">close</span><span class="params">()</span></span>&#123;&#125;  </div><div class="line"><span class="number">13</span>.    <span class="function"><span class="keyword">void</span> <span class="title">alarm</span><span class="params">()</span></span>&#123;&#125;  </div><div class="line"><span class="number">14</span>.&#125;</div></pre></td></tr></table></figure></p>
 <p>这种实现方式基本上能够明确的反映出我们对于问题领域的理解，正确的揭示我们的设计意图。其实抽象类表示的是”is-a”关系，接口表示的是”like-a”关系，大家在选择时可以作为一个依据，当然这是建立在对问题领域的理解上的，比如：如果我们认为AlarmDoor在概念本质上是报警器，同时又具有Door的功能，那么上述的定义方式就要反过来了。</p>
-<p>[^footnote]:ISP（Interface Segregation Principle）：面向对象的一个核心原则。<br>它表明使用多个专门的接口比使用单一的总接口要好。<br>   一个类对另外一个类的依赖性应当是建立在最小的接口上的。<br>   一个接口代表一个角色，不应当将不同的角色都交给一个接口。没有关系的接口合并在一起，形成一个臃肿的大接口，<br>这是对角色和接口的污染。</p>
+<p>[^1]: ISP（Interface Segregation Principle）：面向对象的一个核心原则。<br>它表明使用多个专门的接口比使用单一的总接口要好。<br>一个类对另外一个类的依赖性应当是建立在最小的接口上的。<br>一个接口代表一个角色，不应当将不同的角色都交给一个接口。没有关系的接口合并在一起，形成一个臃肿的大接口，<br>这是对角色和接口的污染。</p>
 <h1 id="四、总结"><a href="#四、总结" class="headerlink" title="四、总结"></a>四、总结</h1><ol>
 <li>抽象类在java语言中所表示的是一种继承关系，一个子类只能存在一个父类，但是可以存在多个接口。</li>
 <li>在抽象类中可以拥有自己的成员变量和非抽象类方法，但是接口中只能存在静态的不可变的成员数据（不过一般都不在接口中定义成员数据），而且它的所有方法都是抽象的。<br>3.抽象类和接口所反映的设计理念是不同的，抽象类所代表的是“is-a”的关系，而接口所代表的是“like-a”的关系。抽象类和接口是java语言中两种不同的抽象概念，他们的存在对多态提供了非常好的支持，虽然他们之间存在很大的相似性。但是对于他们的选择往往反应了您对问题域的理解。只有对问题域的本质有良好的理解，才能做出正确、合理的设计。</li>
@@ -535,7 +535,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-count">11</span>
                 <span class="site-state-item-name">Post</span>
               </a>
             </div>
@@ -546,7 +546,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-count">4</span>
                 <span class="site-state-item-name">Categories</span>
               </a>
             </div>
@@ -557,7 +557,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-count">14</span>
                 <span class="site-state-item-name">Tags</span>
               </a>
             </div>
