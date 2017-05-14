@@ -71,7 +71,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="唉," />
+  <meta name="keywords" content="同步,异步,阻塞及非阻塞," />
 
 
 
@@ -87,16 +87,16 @@
 
 
 
-<meta name="description" content="。。。">
+<meta name="description" content="同步、异步、阻塞及非阻塞是开发中经常遇到的概念，有区别又有联系，极其容易混淆。在深入理解这些概念的时候，需要借助现实中的例子来辅助。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="123">
-<meta property="og:url" content="https://lynnyuki.github.io/2017/04/26/123-1/index.html">
+<meta property="og:title" content="同步、异步、阻塞及非阻塞">
+<meta property="og:url" content="https://lynnyuki.github.io/2017/04/26/Java同步/index.html">
 <meta property="og:site_name" content="Yoo">
-<meta property="og:description" content="。。。">
-<meta property="og:updated_time" content="2017-04-26T11:40:34.024Z">
+<meta property="og:description" content="同步、异步、阻塞及非阻塞是开发中经常遇到的概念，有区别又有联系，极其容易混淆。在深入理解这些概念的时候，需要借助现实中的例子来辅助。">
+<meta property="og:updated_time" content="2017-05-14T07:24:39.615Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="123">
-<meta name="twitter:description" content="。。。">
+<meta name="twitter:title" content="同步、异步、阻塞及非阻塞">
+<meta name="twitter:description" content="同步、异步、阻塞及非阻塞是开发中经常遇到的概念，有区别又有联系，极其容易混淆。在深入理解这些概念的时候，需要借助现实中的例子来辅助。">
 
 
 
@@ -124,13 +124,13 @@
 
 
 
-  <link rel="canonical" href="https://lynnyuki.github.io/2017/04/26/123-1/"/>
+  <link rel="canonical" href="https://lynnyuki.github.io/2017/04/26/Java同步/"/>
 
 
 
 
 
-  <title> 123 | Yoo </title>
+  <title> 同步、异步、阻塞及非阻塞 | Yoo </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -269,7 +269,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lynnyuki.github.io/2017/04/26/123-1/">
+    <link itemprop="mainEntityOfPage" href="https://lynnyuki.github.io/2017/04/26/Java同步/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="LynnYuki">
@@ -290,7 +290,7 @@
             
             
               
-                123
+                同步、异步、阻塞及非阻塞
               
             
           </h1>
@@ -316,6 +316,28 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -323,7 +345,7 @@
 
           
           
-             <span id="/2017/04/26/123-1/" class="leancloud_visitors" data-flag-title="123">
+             <span id="/2017/04/26/Java同步/" class="leancloud_visitors" data-flag-title="同步、异步、阻塞及非阻塞">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -352,8 +374,24 @@
       
 
       
-        <pre><code>。。。
-</code></pre>
+        <p>　　同步、异步、阻塞及非阻塞是开发中经常遇到的概念，有区别又有联系，极其容易混淆。在深入理解这些概念的时候，需要借助现实中的例子来辅助。<br><a id="more"></a></p>
+<h1 id="概念解释"><a href="#概念解释" class="headerlink" title="概念解释"></a>概念解释</h1><p>同步：在调用操作未完成前，调用者一直在等待这个结果，不得到结果不返回。</p>
+<p>异步：在调用后，调用者直接返回，不主动获取和等待调用结果。而是被调用者通过通知或者回调函数来通知调用者。</p>
+<p>阻塞：调用时，由于被调用者状态未就绪，导致调用线程被挂起。状态未就绪并不是指调用者运行缓慢，时间久。</p>
+<p>非阻塞：调用时，被调用者如果就绪则立即返回结果，如果未就绪也会返回一个错误值，告诉调用者当前的状态。调用者可根据错误值选择再次调用，还是执行异常处理。</p>
+<h1 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h1><p>在上面的表述中，很容易发现同步和阻塞，异步和非阻塞是一个概念（也可能我表达能力差。哈哈）。实际上，同步异步、阻塞非阻塞分别是不同维度的概念：</p>
+<h2 id="同步异步侧重于描述调用者进行调用之后的行为（以io读写操作为例）"><a href="#同步异步侧重于描述调用者进行调用之后的行为（以io读写操作为例）" class="headerlink" title="同步异步侧重于描述调用者进行调用之后的行为（以io读写操作为例）:"></a>同步异步侧重于描述调用者进行调用之后的行为（以io读写操作为例）:</h2><p>1.同步在调用后，会主动去获取调用结果，无论是以阻塞方式还是非阻塞轮询方式，调用者需要自己去调用send和recv读写数据。所以像select，epoll等都是同步方式。</p>
+<p>2.异步在调用后，就继续执行其它的工作，读取数据的工作由内核去操作，当数据已经就绪并拷贝到用户空间后，通过通知或者回调函数的形式通知调用者进行数据处理。像mina就是典型的异步模式。<br><strong>由此可见，同步异步的区别在于同步需要调用者读写数据，而异步不需要读写数据</strong></p>
+<h2 id="阻塞和非阻塞侧重于描述被调用者在执行时所处于的状态："><a href="#阻塞和非阻塞侧重于描述被调用者在执行时所处于的状态：" class="headerlink" title="阻塞和非阻塞侧重于描述被调用者在执行时所处于的状态："></a>阻塞和非阻塞侧重于描述被调用者在执行时所处于的状态：</h2><p>1.阻塞操作是被调用者由于数据未准备好，如内核发送缓冲区满或者接收缓冲区空等原因，导致send和recv接口无法返回，此时操作系统将读写线程挂起，让出时间片。</p>
+<p>注意：读写操作慢，并不是上文所说的阻塞情况。</p>
+<p>2.非阻塞操作正好相反，当数据未准备好时，会立即返回给调用者一个结果，如－1，同时设置errno，调用者根据errno判断是否要重新读取数据。</p>
+<h1 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h1><p>老张爱喝茶，废话不说，煮开水。<br>出场人物：老张，水壶两把（普通水壶，简称水壶；会响的水壶，简称响水壶）。<br>1.老张把水壶放到火上，立等水开。（同步阻塞）老张觉得自己有点傻</p>
+<p>2.老张把水壶放到火上，去客厅看电视，时不时去厨房看看水开没有。（同步非阻塞）<br>老张还是觉得自己有点傻，于是变高端了，买了把会响笛的那种水壶。水开之后，能大声发出嘀~~~~的噪音。</p>
+<p>3.老张把响水壶放到火上，立等水开。（异步阻塞）<br>老张觉得这样傻等意义不大</p>
+<p>4.老张把响水壶放到火上，去客厅看电视，水壶响之前不再去看它了，响了再去拿壶。（异步非阻塞）<br>老张觉得自己聪明了。</p>
+<p>所谓同步异步，只是对于水壶而言。<br>普通水壶，同步；响水壶，异步。<br>虽然都能干活，但响水壶可以在自己完工之后，提示老张水开了。这是普通水壶所不能及的。<br>同步只能让调用者去轮询自己（情况2中），造成老张效率的低下。<br>所谓阻塞非阻塞，仅仅对于老张而言。<br>立等的老张，阻塞；看电视的老张，非阻塞。<br>情况1和情况3中老张就是阻塞的，媳妇喊他都不知道。虽然3中响水壶是异步的，可对于立等的老张没有太大的意义。所以一般异步是配合非阻塞使用的，这样才能发挥异步的效用。</p>
+<h1 id="常见的应用情况"><a href="#常见的应用情况" class="headerlink" title="常见的应用情况"></a>常见的应用情况</h1><p>在进行io操作时，阻塞和非阻塞都是同步的，只有一些特殊的api才是异步io。即使java的NIO也是同步操作，底层以select和epoll实现的。</p>
+
       
     </div>
 
@@ -382,7 +420,11 @@
       
         <div class="post-tags">
           
-            <a href="/tags/唉/" rel="tag"># 唉</a>
+            <a href="/tags/同步/" rel="tag"># 同步</a>
+          
+            <a href="/tags/异步/" rel="tag"># 异步</a>
+          
+            <a href="/tags/阻塞及非阻塞/" rel="tag"># 阻塞及非阻塞</a>
           
         </div>
       
@@ -454,8 +496,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar_0.jpg"
@@ -492,7 +543,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-count">16</span>
                 <span class="site-state-item-name">Tags</span>
               </a>
             </div>
@@ -517,6 +568,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#概念解释"><span class="nav-number">1.</span> <span class="nav-text">概念解释</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#区别"><span class="nav-number">2.</span> <span class="nav-text">区别</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#同步异步侧重于描述调用者进行调用之后的行为（以io读写操作为例）"><span class="nav-number">2.1.</span> <span class="nav-text">同步异步侧重于描述调用者进行调用之后的行为（以io读写操作为例）:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#阻塞和非阻塞侧重于描述被调用者在执行时所处于的状态："><span class="nav-number">2.2.</span> <span class="nav-text">阻塞和非阻塞侧重于描述被调用者在执行时所处于的状态：</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#例子"><span class="nav-number">3.</span> <span class="nav-text">例子</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#常见的应用情况"><span class="nav-number">4.</span> <span class="nav-text">常见的应用情况</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
