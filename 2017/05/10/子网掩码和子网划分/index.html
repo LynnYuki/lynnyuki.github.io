@@ -1,0 +1,873 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="计算机网络," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="摘要近期在我的论坛中大家对子网掩码以及子网划分的讨论比较多，因为前面也写了关于ip地址的教程，为了延续性，就写了这个关于子网掩码与子网划分的教程，学这篇教程需要一定的基础（高手当然除外），建议读过前面的关于ip的教程后，再读本教程。准备好了吗？我们开始吧！！">
+<meta property="og:type" content="article">
+<meta property="og:title" content="子网掩码和子网划分">
+<meta property="og:url" content="https://lynnyuki.github.io/2017/05/10/子网掩码和子网划分/index.html">
+<meta property="og:site_name" content="Yoo">
+<meta property="og:description" content="摘要近期在我的论坛中大家对子网掩码以及子网划分的讨论比较多，因为前面也写了关于ip地址的教程，为了延续性，就写了这个关于子网掩码与子网划分的教程，学这篇教程需要一定的基础（高手当然除外），建议读过前面的关于ip的教程后，再读本教程。准备好了吗？我们开始吧！！">
+<meta property="og:updated_time" content="2017-09-09T01:18:37.914Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="子网掩码和子网划分">
+<meta name="twitter:description" content="摘要近期在我的论坛中大家对子网掩码以及子网划分的讨论比较多，因为前面也写了关于ip地址的教程，为了延续性，就写了这个关于子网掩码与子网划分的教程，学这篇教程需要一定的基础（高手当然除外），建议读过前面的关于ip的教程后，再读本教程。准备好了吗？我们开始吧！！">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 'undefined',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lynnyuki.github.io/2017/05/10/子网掩码和子网划分/"/>
+
+
+
+
+
+  <title> 子网掩码和子网划分 | Yoo </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?222804c1d75b15dabf155721bb7d26c1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Yoo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lynnyuki.github.io/2017/05/10/子网掩码和子网划分/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="LynnYuki">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar_0.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yoo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                子网掩码和子网划分
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">posted</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-10T22:31:35+08:00">
+                2017-05-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/05/10/子网掩码和子网划分/" class="leancloud_visitors" data-flag-title="子网掩码和子网划分">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h2><p>近期在我的论坛中大家对子网掩码以及子网划分的讨论比较多，因为前面也写了关于ip地址的教程，为了延续性，就写了这个关于子网掩码与子网划分的教程，学这篇教程需要一定的基础（高手当然除外），建议读过前面的关于ip的教程后，再读本教程。准备好了吗？我们开始吧！！<br><a id="more"></a></p>
+<h2 id="子网掩码的概念及作用"><a href="#子网掩码的概念及作用" class="headerlink" title="子网掩码的概念及作用"></a>子网掩码的概念及作用</h2><p>子网掩码是一个应用于TCP/IP网络的32位二进制值，它可以屏蔽掉ip地址中的一部分，从而分离出ip地址中的网络部分与主机部分，基于子网掩码，管理员可以将网络进一步划分为若干子网。 </p>
+<h2 id="为什么需要使用子网掩码"><a href="#为什么需要使用子网掩码" class="headerlink" title="为什么需要使用子网掩码"></a>为什么需要使用子网掩码</h2><p>虽然我们说子网掩码可以分离出ip地址中的网络部分与主机部分，可大家还是会有疑问，比如为什么要区分网络地址与主机地址？区分以后又怎样呢？那么好，让我们再详细的讲一下吧！ </p>
+<p>在使用TCP/IP协议的两台计算机之间进行通信时，我们通过将本机的子网掩码与接受方主机的ip地址进行’与’运算，即可得到目标主机所在的网络号，又由于每台主机在配置TCP/IP协议时都设置了一个本机ip地址与子网掩码，所以可以知道本机所在的网络号。 </p>
+<p>通过比较这两个网络号，就可以知道接受方主机是否在本网络上。如果网络号相同，表明接受方在本网络上，那么可以通过相关的协议把数据包直接发送到目标主机；如果网络号不同，表明目标主机在远程网络上，那么数据包将会发送给本网络上的路由器，由路由器将数据包发送到其他网络，直至到达目的地。在这个过程中你可以看到，子网掩码是不可或缺的！ </p>
+<h2 id="如何用子网掩码得到网络-主机地址"><a href="#如何用子网掩码得到网络-主机地址" class="headerlink" title="如何用子网掩码得到网络/主机地址"></a>如何用子网掩码得到网络/主机地址</h2><p>既然子网掩码这么重要，那么它是如何分离出ip地址中的网络地址和主机地址的呢？ </p>
+<p>过程如下： </p>
+<p>1、    将ip地址与子网掩码转换成二进制； <br><br>2、 将二进制形式的ip地址与子网掩码做’与’运算，将答案化为十进制便得到网络地址； <br><br>3、 将二进制形式的子网掩码取’反’； <br><br>4、 将取’反’后的子网掩码与ip地址做’与’运算，将答案化为十进制便得到主机地址。 <br></p>
+<p>下面我们用一个例子给大家演示：<br><br>假设有一个I P 地址：192.168.0.1 <br><br>子网掩码为：255.255.255.0 <br><br>化为二进制为：I P 地址11000000.10101000.00000000.00000001 <br><br>子网掩码11111111.11111111.11111111.00000000 <br><br>将两者做’与’运算得：11000000.10101000.00000000.00000000 <br><br>将其化为十进制得：192.168.0.0 <br><br>这便是上面ip的网络地址，主机地址以此类推。<br>小技巧：由于观察到上面的子网掩码为C类地址的默认子网掩码（即未划分子网），便可直接看出网络地址为ip地址的前三部分，即前三个字节。 </p>
+<p>解惑：<br>什么？你还是不懂？问我为什么要做’与’运算而不是别的？其实你仔细观察一下上面的例子就应该能明白。 <br><br>‘1’在做’与’运算时，不影响结果，’0’在做’与’运算时，将得到0，利用’与’的这个特性，当管理员设置子网掩码时，即将子网掩码上与网络地址所对应的位都设为’1’,其他位都设为’0’,那么当作’与’时，ip地址中的网络号将被保留到结果中，而主机号将被置0，这样就解析出了网络号，解析主机号也一样，只需先把子网掩码取’反’,在做’与’。 </p>
+<h2 id="子网掩码的分类"><a href="#子网掩码的分类" class="headerlink" title="子网掩码的分类"></a>子网掩码的分类</h2><p>1）缺省子网掩码： <br><br>即未划分子网，对应的网络号的位都置1，主机号都置0。 <br><br>A类网络缺省子网掩码：255.0.0.0 <br><br>B类网络缺省子网掩码：255.255.0.0  <br><br>C类网络缺省子网掩码：255.255.255.0  <br></p>
+<p>2）自定义子网掩码：<br>将一个网络划分为几个子网，需要每一段使用不同的网络号或子网号，实际上我们可以认为是将主机号分为两个部分：子网号、子网主机号。 形式如下：  <br><br>未做子网划分的ip地址：网络号＋主机号  <br><br>做子网划分后的ip地址：网络号＋子网号＋子网主机号  <br><br>也就是说ip地址在化分子网后，以前的主机号位置的一部分给了子网号，余下的是子网主机号。 </p>
+<h2 id="子网编址技术"><a href="#子网编址技术" class="headerlink" title="子网编址技术"></a>子网编址技术</h2><p>&amp;nbsp前面几点介绍了子网掩码的一些知识，下面我们来看看子网划分，不要认为子网划分与子网掩码没有关系哟，子网划分也是靠子网掩码来实现的。 </p>
+<p>子网是指一个ip地址上生成的逻辑网络，它可以让一个网络地址跨越多个物理网络，即一个网络地址代表多个网络（很明显这样做可以节省ip地址）。呵呵，听起来是不是很蹊跷？一个网络就这样被莫名其妙的划分成了许多子网？那么这样做有什么用呢？</p>
+<p>我举个例子来跟你说吧：比如你是某个学校的网管，你的学校有四个处于不同物理位置的网络教室，每个网络教室25台机器，你的任务是给这些机器配置ip地址和子网掩码。你可能会觉得这再简单不过了，申请4个C类地址，每个教室一个，然后在一一配置不就搞定了。嗯，这样做理论上没错，但你有没有想到这样做很浪费，你一共浪费了(254-25)*4=916个ip地址，如果所有的网管都像你这样做，那么internet上的ip地址将会在极短的时间内枯竭，显然，你是不能这样做，你应该做子网划分。 </p>
+<p>子网划分说白了是这样一个事情：因为在划分了子网后，ip地址的网络号是不变的，因此在局域网外部看来，这里仍然只存在一个网络，即网络号所代表的那个网络；但在网络内部却是另外一个景象，因为我们每个子网的子网号是不同的，当用化分子网后的ip地址与子网掩码（注意，这里指的子网掩码已经不是缺省子网掩码了，而是自定义子网掩码，是管理员在经过计算后得出的）做’与’运算时，每个子网将得到不同的子网地址，从而实现了对网络的划分（得到了不同的地址，当然就能区别出各个子网了，有趣吧）。 </p>
+<p>子网编址技术，即子网划分将会有助于以下问题的解决： <br><br>1）巨大的网络地址管理耗费：如果你是一个A类网络的管理员，你一定会为管理数量庞大的主机而头痛的； <br><br>2）路由器中的选路表的急剧膨胀：当路由器与其他路由器交换选路表时，互联网的负载是很高的，所需的计算量也很高； <br><br>3）IP地址空间有限并终将枯竭：这是一个至关重要的问题，高速发展的internet,使原来的编址方法不能适应，而一些ip地址却不能被充分的利用，造成了浪费。 <br><br>因此，在配置局域网或其他网络时，根据需要划分子网是很重要的，有时也是必要的。现在，子网编址技术已经被绝大多数局域网所使用。 </p>
+<h2 id="如何划分子网及确定子网掩码"><a href="#如何划分子网及确定子网掩码" class="headerlink" title="如何划分子网及确定子网掩码"></a>如何划分子网及确定子网掩码</h2><p>在动手划分之前，一定要考虑网络目前的需求和将来的需求计划。 <br><br>划分子网主要从以下方面考虑:  <br><br>1.网络中物理段的数量（即要划分的子网数量）  <br><br>2.每个物理段的主机的数量  <br></p>
+<p>确定子网掩码的步骤：  <br><br>第一步：确定物理网段的数量，并将其转换为二进制数，并确定位数n。如：你需要6个子网，6的二进制值为110，共3位,即n=3；  <br><br>第二步：按照你ip地址的类型写出其缺省子网掩码。如C类，则缺省子网掩码为 11111111.11111111.11111111.00000000； <br><br>第三步：将子网掩码中与主机号的前n位对应的位置置1，其余位置置0。若n=3且为<br>C类地址：则得到子网掩码为11111111.11111111.11111111.11100000化为十进制得到255.255.255.224  <br><br>B类地址：则得到子网掩码为11111111.11111111.11100000.00000000化为十进制得到255.255.224.0  <br><br>A类地址：则得到子网掩码为11111111.11100000.00000000.00000000化为十进制得到255.224.0.0 <br><br>另：由于网络被划分为6个子网，占用了主机号的前3位，若是C类地址，则主机号只能用5位来表示主机号，因此每个子网内的主机数量＝（2的5次方）－2＝30，6个子网总共所能标识的主机数将小于254，这点请大家注意！ </p>
+<p>解惑：<br>1.你可能有这样的疑问，比如在上面的例子里，6的二进制值为110，那么为什么要将子网掩码中与主机号的前n位对应的位置都置1，而不是用6的二进制110去替代前n位呢？  <br><br>这个问题提的很好，答案是这样的：我们计算子网掩码的目的是什么？就是希望它在做’与’的时候能够解析出网络号，也就是说它与网络号所对应的位置都应该是1（当然包括与子网号所对应的位置），那么很显然，你写上110是不对的，如果你这么写，那么它的意义是主机号的前两位作为子网号，那么这样将最多划分2个子网（不明白没关系，下面有计算子网数量的方法），与我们当初所要划分的6个子网显然是不一致的。这样解释你能明白马？ </p>
+<p>2.细心的人可能会发现，划分4个子网，5个子网和6个子网的子网掩码是一样的，同为255.255.255.224，是不是错了呢？三个子网掩码应该不同呀？呵呵，是这样的，因为4，5，6的二进制值都是3为，因此在子网掩码中这三位都置1，划分是没有问题的，只是你的理解上有一点小小的问题，划分为4个子网，其实可以理解为划分为6个子网，但你只使用了其中的4个。比如你想划分8个子网，与划分14个子网所得到的子网掩码是一样的，都占用了4位作为子网号。 </p>
+<h2 id="相关判断方法"><a href="#相关判断方法" class="headerlink" title="相关判断方法"></a>相关判断方法</h2><p>1）如何判断是否做了子网划分？ <br><br>这个问题很简单，如果它使用了缺省子网掩码，那么表示没有作子网划分；反之，则一定作了子网划分。<br> </p>
+<p>2）如何计算子网地址？ <br><br>还是老办法，将ip地址与子网掩码的二进制形式做’与’，得到的结果即为子网地址。 <br></p>
+<p>3）如何计算主机地址？ <br><br>这个也不用说了吧，先将子网掩码的二进制取’反’，再与ip地址做’与’。 <br></p>
+<p>4）如何计算子网数量？ <br><br>这个问题大家会常常提到，还是从子网掩码入手，主要有两个步骤：<br><br>1.观察子网掩码的二进制形式，确定作为子网号的位数n； <br><br>2.子网数量为2的n次方－2。（为什么减2，呵呵，往下看） <br><br>举个例子来说，比如有这样一个子网掩码：255.255.255.224其二进制为： <br><br>11111111.11111111.11111111.11100000可见n=3,2的3次方为8，说明子网地址可能有<br><br>如下8种情况： <br><br>000 <br><br>001 <br><br>010 <br><br>011 <br><br>100 <br><br>101 <br><br>110 <br><br>111 <br><br>但其中代表网络自身的000；代表广播地址的111是被保留的，所以要减2，明白了吗？ <br></p>
+<p>5）如何计算总主机数量，子网内主机数量？ <br><br>总主机数量＝子网数量×子网内主机数量 <br><br>再用一个例子给大家说明，比如子网掩码为255.255.255.224 <br><br>上面的讨论知道它最多可以划分6个子网，那么每个子网内最多有多少个主机呢？其实上面我已经给大家算过了，由于网络被划分为6个子网，占用了主机号的前3位，且是C类地址，则主机号只能用5位来表示主机号，因此子网内的主机数量＝（2的5次方）－2＝30. <br><br>因此通过这个子网掩码我们可以算出这个网络最多可以标识6*30=180个主机（可见，在化分子网后，整个网络所能标识的主机数量将减少）。<br> </p>
+<p>6）计算ip地址范围 <br><br>通过一个自定义子网掩码，我们可以得到这个网络所有可能的ip地址范围。<br><br>具体步骤： <br><br>1.写出二进制子网地址； <br><br>2.将子网地址化为十进制； <br><br>3.计算子网所能容纳主机数； <br><br>4.得出ip范围（起始地址：子网地址＋1；终止地址：子网地址＋主机数）<br> </p>
+<p>假设一个子网掩码为：255.255.255.224，可知其最多可以划分6个子网，子网内主机数为30，那么所有可能的ip地址及计算流程如下： <br><br>子网－－子网地址（二进制）－－－－－－－－子网地址－－－－－实际ip范围 <br><br>1号－11001010.01110000.00001010.00100000－202.112.10.32－202.112.10.33-202.112.10.62 <br><br>2号－11001010.01110000.00001010.01000000－202.112.10.64－202.112.10.65-202.112.10.94 <br><br>3号－11001010.01110000.00001010.01100000－202.112.10.96－202.112.10.97-202.112.10.126 <br><br>4号－11001010.01110000.00001010.10000000－202.112.10.128－202.112.10.129-202.112.10.158 <br><br>5号－11001010.01110000.00001010.10100000－202.112.10.160－202.112.10.161-202.112.10.190 <br><br>6号－11001010.01110000.00001010.11000000－202.112.10.192－202.112.10.193-202.112.10.222</p>
+<p><a href="http://blog.csdn.net/jin13277480598/article/details/53940476" target="_blank" rel="external">转自CSDN</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/计算机网络/" rel="tag"># 计算机网络</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/04/26/Java同步/" rel="next" title="同步、异步、阻塞及非阻塞">
+                <i class="fa fa-chevron-left"></i> 同步、异步、阻塞及非阻塞
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar_0.jpg"
+               alt="LynnYuki" />
+          <p class="site-author-name" itemprop="name">LynnYuki</p>
+           
+              <p class="site-description motion-element" itemprop="description">The best time to plant a tree was a decade ago. 				The second best time is now.</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">Post</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">Categories</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">16</span>
+                <span class="site-state-item-name">Tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#摘要"><span class="nav-number">1.</span> <span class="nav-text">摘要</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#子网掩码的概念及作用"><span class="nav-number">2.</span> <span class="nav-text">子网掩码的概念及作用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么需要使用子网掩码"><span class="nav-number">3.</span> <span class="nav-text">为什么需要使用子网掩码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何用子网掩码得到网络-主机地址"><span class="nav-number">4.</span> <span class="nav-text">如何用子网掩码得到网络/主机地址</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#子网掩码的分类"><span class="nav-number">5.</span> <span class="nav-text">子网掩码的分类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#子网编址技术"><span class="nav-number">6.</span> <span class="nav-text">子网编址技术</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何划分子网及确定子网掩码"><span class="nav-number">7.</span> <span class="nav-text">如何划分子网及确定子网掩码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#相关判断方法"><span class="nav-number">8.</span> <span class="nav-text">相关判断方法</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">LynnYuki</span>
+</div>
+
+
+<div class="powered-by">
+  <a class="theme-link" href="https://hexo.io">Hexo</a> 
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("RtiqcyaXN0FNuaRTjaucOixs-gzGzoHsz", "X8b8SrHC7V6ydIwEVJxwbvbG");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

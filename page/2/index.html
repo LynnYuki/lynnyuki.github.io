@@ -71,7 +71,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Android,消息机制，多线程," />
+  <meta name="keywords" content="Hexo, NexT" />
 
 
 
@@ -87,19 +87,15 @@
 
 
 
-<meta name="description" content="Android中的消息机制和多线程
-###handler的消息传递机制android 只允许UI线程修改UI组件，所以子线程需要消息传递给UI线程来更改UI组件">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Android中的消息机制和多线程">
-<meta property="og:url" content="https://lynnyuki.github.io/2017/04/04/Android中的消息机制和多线程/index.html">
+<meta name="description" content="The best time to plant a tree was a decade ago. 				The second best time is now.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Yoo">
+<meta property="og:url" content="https://lynnyuki.github.io/page/2/index.html">
 <meta property="og:site_name" content="Yoo">
-<meta property="og:description" content="Android中的消息机制和多线程
-###handler的消息传递机制android 只允许UI线程修改UI组件，所以子线程需要消息传递给UI线程来更改UI组件">
-<meta property="og:updated_time" content="2017-04-30T12:16:35.785Z">
+<meta property="og:description" content="The best time to plant a tree was a decade ago. 				The second best time is now.">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Android中的消息机制和多线程">
-<meta name="twitter:description" content="Android中的消息机制和多线程
-###handler的消息传递机制android 只允许UI线程修改UI组件，所以子线程需要消息传递给UI线程来更改UI组件">
+<meta name="twitter:title" content="Yoo">
+<meta name="twitter:description" content="The best time to plant a tree was a decade ago. 				The second best time is now.">
 
 
 
@@ -127,13 +123,13 @@
 
 
 
-  <link rel="canonical" href="https://lynnyuki.github.io/2017/04/04/Android中的消息机制和多线程/"/>
+  <link rel="canonical" href="https://lynnyuki.github.io/page/2/"/>
 
 
 
 
 
-  <title> Android中的消息机制和多线程 | Yoo </title>
+  <title> Yoo </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -168,7 +164,9 @@
     
   
 
-  <div class="container one-collumn sidebar-position-left page-post-detail ">
+  <div class="container one-collumn sidebar-position-left 
+   page-home 
+ ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -261,9 +259,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-
-  <div id="posts" class="posts-expand">
+  <section id="posts" class="posts-expand">
     
+      
 
   
 
@@ -272,7 +270,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lynnyuki.github.io/2017/04/04/Android中的消息机制和多线程/">
+    <link itemprop="mainEntityOfPage" href="https://lynnyuki.github.io/2017/03/15/first-article/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="LynnYuki">
@@ -293,7 +291,10 @@
             
             
               
-                Android中的消息机制和多线程
+                
+                <a class="post-title-link" href="/2017/03/15/first-article/" itemprop="url">
+                  の
+                </a>
               
             
           </h1>
@@ -308,8 +309,8 @@
               
                 <span class="post-meta-item-text">posted</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-04T17:02:45+08:00">
-                2017-04-04
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-15T19:52:21+08:00">
+                2017-03-15
               </time>
             
 
@@ -319,28 +320,6 @@
           </span>
 
           
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
 
           
             
@@ -348,7 +327,7 @@
 
           
           
-             <span id="/2017/04/04/Android中的消息机制和多线程/" class="leancloud_visitors" data-flag-title="Android中的消息机制和多线程">
+             <span id="/2017/03/15/first-article/" class="leancloud_visitors" data-flag-title="の">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -377,100 +356,49 @@
       
 
       
-        <p></p><h2><center>Android中的消息机制和多线程</center></h2><p></p>
-<p>###<li>handler的消息传递机制<br>android 只允许UI线程修改UI组件，所以子线程需要消息传递给UI线程来更改UI组件<br><br><a id="more"></a></li></p>
-<p>####handler类的主要作用：</p>
-<p><li>子线程中发送消息</li></p>
-<p><li>主线程接收处理消息<br><br>handler必须在主线程中创建。子线程中必须初始化一个Looper。Looper.prepare()方法保证每个线程中只有一个Looper对象<br></li></p>
-<p>####Looper/MessageQueue/Handler各自的作用如下：</p>
-<p><li>looper:每个线程只有一个，不断从MessageQueue中取出消息，将消息分发给handler处理</li></p>
-<p><li>MessageQueue:由looper管理，先进先出的消息队列，不断接受来自handler的消息</li></p>
-<p><li>handler:消息发送给MessageQueue，然后处理来自looper的消息。</li></p>
-<p>###<li>AysncTask<br>先来看看AysncTask的定义：</li></p>
-<p><pre><code>public abstract class AsyncTask&lt; Params,Progress,Result&gt;{}</code></pre><br>三个泛型分别表示参数类型，进度类型，返回结果类型。如果不需要的话可以设为void<br>一个异步任务的执行通常有以下几个步骤</p>
-<p><li>execute(Params…params)：在代码中调用，触发异步任务的执行</li></p>
-<p><li>onPreExecute()：在execute(Params…params)调用后立即执行，执行在UI线程中，在执行后台任务之前对UI组件进行标记</li></p>
-<p><li>doInBackground()：在execute(Params…params)之后调用，执行耗时操作，接收输入参数和返回结果，执行过程中可以调用PublishProgress(Progress…values)来更新进度信息</li></p>
-<p><li>onProgressUpdate(Progress…values)：直接在UI中更新进度，显示在UI组件上</li></p>
-<p><li>onPostExecute(Result result)：执行在UI线程，将doInBackground()执行的结果作为参数传递到此方法中，结果直接显示在UI组件<br>使用时要注意的几点：</li></p>
-<p><li>实例在UI线程创建</li></p>
-<p><li>execute(Params…params)在UI线程调用</li></p>
-<p><li>不能在doInBackground()中更改UI组件</li></p>
-<p><li>一个实例只能execute一次。</li></p>
-<hr>
-
+        
+          
+            
+          
+        
       
     </div>
 
     <div>
       
-        
-
-      
     </div>
 
     <div>
       
-        
-
-      
     </div>
 
     <div>
-      
-        
-
       
     </div>
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/Android/" rel="tag"># Android</a>
-          
-            <a href="/tags/消息机制，多线程/" rel="tag"># 消息机制，多线程</a>
-          
-        </div>
+
       
 
       
-        
-      
 
       
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2017/04/01/Android事件分发机制/" rel="next" title="Andorid事件分发机制">
-                <i class="fa fa-chevron-left"></i> Andorid事件分发机制
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/04/08/单例模式/" rel="prev" title="单例模式+观察者模式+抽象工厂模式+工厂方法模式">
-                单例模式+观察者模式+抽象工厂模式+工厂方法模式 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
       
-
-      
+        <div class="post-eof"></div>
       
     </footer>
   </article>
 
 
+    
+  </section>
 
-    <div class="post-spread">
-      
-    </div>
-  </div>
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+  </nav>
+
 
           
           </div>
@@ -478,10 +406,6 @@
 
 
           
-  <div class="comments" id="comments">
-    
-  </div>
-
 
         </div>
         
@@ -501,17 +425,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview sidebar-panel">
+      <section class="site-overview sidebar-panel sidebar-panel-active">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar_0.jpg"
@@ -573,22 +488,6 @@
 
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">1.</span> <span class="nav-text">Android中的消息机制和多线程</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
@@ -706,10 +605,6 @@
 
 
   
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
-
-
 
   
 
